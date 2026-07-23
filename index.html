@@ -570,7 +570,8 @@
             <p style="font-size: 12px; color: var(--text-secondary);">Recalculate portfolio projections, check advance tax offsets, and run real-time stress tests.</p>
           </div>
         </div>
-        <div style="display: flex; gap: 12px;">
+        <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+          <button class="btn-primary" id="btnDownloadFullPlan"><i data-lucide="download"></i> Download Full Plan (PDF)</button>
           <button class="btn-secondary" id="btnResultsEditProfile"><i data-lucide="edit-3"></i> Edit Profile Details</button>
           <button class="btn-secondary" id="btnResultsBackToHome"><i data-lucide="arrow-left"></i> Home Vault</button>
         </div>
@@ -592,13 +593,25 @@
             </div>
           </div>
 
-          <!-- Glide Path Stacked Area Chart Card -->
-          <div class="card" style="background: rgba(6, 8, 13, 0.6); border: 1px solid var(--border-subtle); padding: 20px;">
-            <h3 style="font-size: 15px; color: var(--gold-light); margin-bottom: 14px;">
-              <i data-lucide="shield" style="color: var(--gold-primary); vertical-align: middle; margin-right: 6px;"></i> Age-Based Asset Allocation Glide Path
-            </h3>
-            <div style="height: 200px; position: relative;">
-              <canvas id="glidePathChart"></canvas>
+          <div class="responsive-grid-2" style="grid-template-columns: 1.2fr 1fr; gap: 20px;">
+            <!-- Glide Path Stacked Area Chart Card -->
+            <div class="card" style="background: rgba(6, 8, 13, 0.6); border: 1px solid var(--border-subtle); padding: 20px; height: 100%;">
+              <h3 style="font-size: 15px; color: var(--gold-light); margin-bottom: 14px; margin-top: 0;">
+                <i data-lucide="shield" style="color: var(--gold-primary); vertical-align: middle; margin-right: 6px;"></i> Asset Allocation Glide Path
+              </h3>
+              <div style="height: 200px; position: relative;">
+                <canvas id="glidePathChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Master Current Allocation Doughnut Card -->
+            <div class="card" style="background: rgba(6, 8, 13, 0.6); border: 1px solid var(--border-subtle); padding: 20px; height: 100%;">
+              <h3 style="font-size: 15px; color: var(--gold-light); margin-bottom: 14px; margin-top: 0; display: flex; justify-content: space-between; align-items: center;">
+                <span><i data-lucide="pie-chart" style="color: var(--gold-primary); vertical-align: middle; margin-right: 6px;"></i> Master Asset Allocation</span>
+              </h3>
+              <div style="height: 200px; position: relative;">
+                <canvas id="resAllocChart"></canvas>
+              </div>
             </div>
           </div>
 
@@ -722,6 +735,15 @@
         </div>
 
       </div>
+
+      <!-- Micro-View Grid Section -->
+      <div style="border-top: 1px solid var(--border-gold); margin-top: 30px; padding-top: 24px; width: 100%;">
+        <h3 style="font-size: 18px; color: var(--gold-light); margin-bottom: 20px; display: flex; align-items: center; gap: 8px;"><i data-lucide="grid" style="color: var(--gold-primary); vertical-align: middle;"></i> Goal & Asset Micro-Performance Controls</h3>
+        <div class="responsive-grid-3" id="microCardsGrid" style="gap: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); width: 100%; margin-bottom: 24px;">
+          <!-- Injected dynamically in results.js -->
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -733,6 +755,21 @@
         <button class="btn-icon" id="btnCloseAuditLog"><i data-lucide="x"></i></button>
       </div>
       <div id="auditLogContent" style="font-size: 13px; display: flex; flex-direction: column; gap: 8px;"></div>
+    </div>
+  </div>
+
+  <!-- Floating explanation side panel -->
+  <div id="explainSlideOut" style="position: fixed; right: -380px; top: 0; width: 360px; height: 100vh; background: linear-gradient(180deg, rgba(10, 15, 26, 0.98) 0%, rgba(5, 7, 12, 0.99) 100%); border-left: 1px solid var(--border-gold); z-index: 1000; box-shadow: -10px 0 30px rgba(0,0,0,0.6); padding: 24px; transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1); overflow-y: auto; display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 12px;">
+      <h3 style="font-size: 16px; color: var(--gold-light); display:flex; align-items:center; gap:8px; margin:0;"><i data-lucide="sparkles" style="color: var(--gold-primary);"></i> AI Chart Analysis</h3>
+      <button id="closeExplainPanel" class="btn-icon" style="padding: 4px; background:transparent; border:none; color:var(--text-secondary); cursor:pointer;"><i data-lucide="x"></i></button>
+    </div>
+    <div style="font-size: 11px; font-weight:700; color: var(--gold-primary); text-transform:uppercase; letter-spacing:0.5px;" id="explainTargetChartName">Chart: Wealth Growth</div>
+    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); padding: 12px; border-radius: var(--radius-sm); font-size: 11px; line-height: 1.45; color: var(--text-secondary);" id="explainChartDataSummary">
+      <!-- Data details -->
+    </div>
+    <div style="flex: 1; min-height: 120px; font-size: 12.5px; line-height: 1.65; color: var(--gold-light); display:flex; flex-direction:column; gap:10px;" id="explainTextContent">
+      <div style="display:flex; align-items:center; gap:8px;"><div class="pulse-dot"></div> Analysing details...</div>
     </div>
   </div>
 
