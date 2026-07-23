@@ -299,11 +299,23 @@
           </div>
         </section>
 
-        <!-- STEP 4: GOALS, RUNWAYS & PROJECTIONS -->
+        <!-- STEP 4: ASSET ALLOCATION & GOALS -->
         <section class="step-pane" id="step-4">
           <div class="card">
             <div class="card-header" style="flex-wrap: wrap; gap: 14px;">
-              <h2 class="card-title"><i data-lucide="target"></i> Step 4: Goals, Runways & Projections</h2>
+              <h2 class="card-title"><i data-lucide="target"></i> Step 4: Asset Allocation & Goals</h2>
+              
+              <!-- Sim Age Dropdown -->
+              <div style="display: flex; gap: 10px; align-items: center; margin-left: auto;">
+                <label class="form-label" style="margin: 0; font-size: 12.5px; color: var(--text-secondary);">Simulate Portfolio at Age:</label>
+                <select id="selectSimulationAge" class="form-input" style="width: 100px; padding: 6px 12px; font-size: 13px; background: rgba(10,15,26,0.9); border: 1px solid var(--border-gold); color: var(--text-primary);">
+                  <option value="35" selected>Age 35</option>
+                  <option value="55">Age 55</option>
+                  <option value="75">Age 75</option>
+                </select>
+              </div>
+
+              <!-- Add Goal Controls -->
               <div style="display: flex; gap: 10px; align-items: center;">
                 <select id="selectGoalType" class="form-input" style="width: 260px; padding: 8px 12px; font-size: 13px; background: rgba(10,15,26,0.9); border: 1px solid var(--border-gold);">
                   <optgroup label="HNI Client Goals">
@@ -326,96 +338,101 @@
               </div>
             </div>
 
-            <div id="goalsContainer">
-              <!-- Dynamic goal cards with calculated drawdown/growth projections -->
+            <!-- Goals Container -->
+            <div id="goalsContainer" style="margin-top: 10px; margin-bottom: 30px;">
+              <!-- Dynamic goal cards with tables + sparkline + pie chart rendered in 2-column layout -->
             </div>
+
+            <!-- Lower Bottom: Capital Deployment Block -->
+            <div style="border-top: 1px solid var(--border-subtle); padding-top: 24px;">
+              <h3 style="font-size: 16px; color: var(--gold-light); margin-bottom: 14px;"><i data-lucide="pie-chart" style="color: var(--gold-primary); vertical-align: middle; margin-right: 6px;"></i> Base Asset Allocation (₹73 Cr Corpus)</h3>
+              
+              <div class="responsive-grid-2" style="align-items: center;">
+                <div>
+                  <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5;">
+                    Manage your capital allocation weights below. Adjusting the "Simulate Portfolio at Age" dropdown above will automatically model the linear glide path transition. Ensure total weights sum to exactly <strong>100%</strong> to proceed.
+                  </p>
+
+                  <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <div class="form-group" style="margin: 0;">
+                      <label class="form-label" style="display: flex; justify-content: space-between;">
+                        <span>Equity Allocation</span>
+                        <strong id="lblCapWeightEquity" style="color: var(--gold-primary);">45% (₹32.85 Cr)</strong>
+                      </label>
+                      <input type="range" class="cap-weight-slider" id="sliderCapEquity" min="0" max="100" step="1" value="45" style="accent-color: var(--gold-primary); height: 6px; padding: 0;" />
+                    </div>
+
+                    <div class="form-group" style="margin: 0;">
+                      <label class="form-label" style="display: flex; justify-content: space-between;">
+                        <span>Debt Allocation</span>
+                        <strong id="lblCapWeightDebt" style="color: var(--gold-primary);">25% (₹18.25 Cr)</strong>
+                      </label>
+                      <input type="range" class="cap-weight-slider" id="sliderCapDebt" min="0" max="100" step="1" value="25" style="accent-color: var(--gold-primary); height: 6px; padding: 0;" />
+                    </div>
+
+                    <div class="form-group" style="margin: 0;">
+                      <label class="form-label" style="display: flex; justify-content: space-between;">
+                        <span>Alternatives (AIF/PMS)</span>
+                        <strong id="lblCapWeightAlts" style="color: var(--gold-primary);">15% (₹10.95 Cr)</strong>
+                      </label>
+                      <input type="range" class="cap-weight-slider" id="sliderCapAlts" min="0" max="100" step="1" value="15" style="accent-color: var(--gold-primary); height: 6px; padding: 0;" />
+                    </div>
+
+                    <div class="form-group" style="margin: 0;">
+                      <label class="form-label" style="display: flex; justify-content: space-between;">
+                        <span>Real Estate</span>
+                        <strong id="lblCapWeightRE" style="color: var(--gold-primary);">10% (₹7.30 Cr)</strong>
+                      </label>
+                      <input type="range" class="cap-weight-slider" id="sliderCapRE" min="0" max="100" step="1" value="10" style="accent-color: var(--gold-primary); height: 6px; padding: 0;" />
+                    </div>
+
+                    <div class="form-group" style="margin: 0;">
+                      <label class="form-label" style="display: flex; justify-content: space-between;">
+                        <span>Physical Gold</span>
+                        <strong id="lblCapWeightGold" style="color: var(--gold-primary);">5% (₹3.65 Cr)</strong>
+                      </label>
+                      <input type="range" class="cap-weight-slider" id="sliderCapGold" min="0" max="100" step="1" value="5" style="accent-color: var(--gold-primary); height: 6px; padding: 0;" />
+                    </div>
+
+                    <div class="form-group" style="margin: 0;">
+                      <label class="form-label" style="display: flex; justify-content: space-between;">
+                        <span>Cash / Liquidity</span>
+                        <strong id="lblCapWeightCASH" style="color: var(--gold-primary);">0% (₹0.00 Cr)</strong>
+                      </label>
+                      <input type="range" class="cap-weight-slider" id="sliderCapCash" min="0" max="100" step="1" value="0" style="accent-color: var(--gold-primary); height: 6px; padding: 0;" />
+                    </div>
+                  </div>
+
+                  <div style="margin-top: 24px; padding: 14px; border-radius: var(--radius-sm); display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-subtle); background: rgba(0,0,0,0.25);" id="capWeightStatusCard">
+                    <div style="font-size: 13px; font-weight: 700;">Total Weight Allocated:</div>
+                    <div style="font-size: 18px; font-weight: 800;" id="lblCapTotalWeight">100%</div>
+                  </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.15); border-radius: var(--radius-md); padding: 20px; border: 1px solid var(--border-subtle);">
+                  <h4 style="font-size: 13.5px; color: var(--gold-light); margin-bottom: 14px; text-transform: uppercase;">Asset Deployment Breakdown (Main Pie Chart)</h4>
+                  <div style="width: 250px; height: 250px; position: relative;">
+                    <canvas id="capDeploymentChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </section>
 
-        <!-- STEP 5: INITIAL CAPITAL DEPLOYMENT -->
+        <!-- STEP 5: EQUITY PORTFOLIO COMPOSITION -->
         <section class="step-pane" id="step-5">
           <div class="card">
             <div class="card-header">
-              <h2 class="card-title"><i data-lucide="pie-chart"></i> Step 5: Initial Capital Deployment (₹73 Cr Base)</h2>
-              <span class="brand-tag">Age 35 Asset Allocation</span>
-            </div>
-
-            <div class="responsive-grid-2" style="align-items: center; margin-top: 10px;">
-              <div>
-                <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5;">
-                  Allocate your base liquid corpus of <strong>₹73 Crore</strong> at Age 35. Customize weights below. Ensure the total allocation sums to exactly <strong>100%</strong> to proceed.
-                </p>
-
-                <div style="display: flex; flex-direction: column; gap: 16px;">
-                  <div class="form-group" style="margin: 0;">
-                    <label class="form-label" style="display: flex; justify-content: space-between;">
-                      <span>Equity Allocation</span>
-                      <strong id="lblCapWeightEquity" style="color: var(--gold-primary);">45% (₹32.85 Cr)</strong>
-                    </label>
-                    <input type="range" class="cap-weight-slider" id="sliderCapEquity" min="0" max="100" step="1" value="45" style="accent-color: var(--gold-primary); height: 6px; padding: 0;" />
-                  </div>
-
-                  <div class="form-group" style="margin: 0;">
-                    <label class="form-label" style="display: flex; justify-content: space-between;">
-                      <span>Debt Allocation</span>
-                      <strong id="lblCapWeightDebt" style="color: var(--gold-primary);">25% (₹18.25 Cr)</strong>
-                    </label>
-                    <input type="range" class="cap-weight-slider" id="sliderCapDebt" min="0" max="100" step="1" value="25" style="accent-color: var(--gold-primary); height: 6px; padding: 0;" />
-                  </div>
-
-                  <div class="form-group" style="margin: 0;">
-                    <label class="form-label" style="display: flex; justify-content: space-between;">
-                      <span>Alternatives (AIF/PMS)</span>
-                      <strong id="lblCapWeightAlts" style="color: var(--gold-primary);">15% (₹10.95 Cr)</strong>
-                    </label>
-                    <input type="range" class="cap-weight-slider" id="sliderCapAlts" min="0" max="100" step="1" value="15" style="accent-color: var(--gold-primary); height: 6px; padding: 0;" />
-                  </div>
-
-                  <div class="form-group" style="margin: 0;">
-                    <label class="form-label" style="display: flex; justify-content: space-between;">
-                      <span>Real Estate</span>
-                      <strong id="lblCapWeightRE" style="color: var(--gold-primary);">10% (₹7.30 Cr)</strong>
-                    </label>
-                    <input type="range" class="cap-weight-slider" id="sliderCapRE" min="0" max="100" step="1" value="10" style="accent-color: var(--gold-primary); height: 6px; padding: 0;" />
-                  </div>
-
-                  <div class="form-group" style="margin: 0;">
-                    <label class="form-label" style="display: flex; justify-content: space-between;">
-                      <span>Physical Gold</span>
-                      <strong id="lblCapWeightGold" style="color: var(--gold-primary);">5% (₹3.65 Cr)</strong>
-                    </label>
-                    <input type="range" class="cap-weight-slider" id="sliderCapGold" min="0" max="100" step="1" value="5" style="accent-color: var(--gold-primary); height: 6px; padding: 0;" />
-                  </div>
-                </div>
-
-                <div style="margin-top: 24px; padding: 14px; border-radius: var(--radius-sm); display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-subtle); background: rgba(0,0,0,0.25);" id="capWeightStatusCard">
-                  <div style="font-size: 13px; font-weight: 700;">Total Weight Allocated:</div>
-                  <div style="font-size: 18px; font-weight: 800;" id="lblCapTotalWeight">100%</div>
-                </div>
-              </div>
-
-              <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.15); border-radius: var(--radius-md); padding: 20px; border: 1px solid var(--border-subtle);">
-                <h4 style="font-size: 13.5px; color: var(--gold-light); margin-bottom: 14px; text-transform: uppercase;">Asset Deployment Breakdown</h4>
-                <div style="width: 260px; height: 260px; position: relative;">
-                  <canvas id="capDeploymentChart"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- STEP 6: EQUITY PORTFOLIO COMPOSITION -->
-        <section class="step-pane" id="step-6">
-          <div class="card">
-            <div class="card-header">
-              <h2 class="card-title"><i data-lucide="layers"></i> Step 6: Equity Portfolio Composition (₹32.85 Cr Sleeve)</h2>
+              <h2 class="card-title"><i data-lucide="layers"></i> Step 5: Equity Portfolio Composition (₹32.85 Cr Sleeve)</h2>
               <span class="brand-tag">Deep-Dive Sunburst Model</span>
             </div>
 
             <div class="responsive-grid-2" style="align-items: center; margin-top: 10px;">
               <div>
                 <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.5;">
-                  Deep-dive analysis of your Equity sleeve. Visualized using a concentric hierarchical donut model split between domestic sectors, foreign allocations, and direct mutual funds.
+                  Deep-dive analysis of your Equity sleeve. Visualized using a concentric hierarchical doughnut model split between domestic sectors, foreign allocations, and direct mutual funds.
                 </p>
 
                 <div class="table-responsive">
@@ -473,7 +490,7 @@
               </div>
 
               <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.15); border-radius: var(--radius-md); padding: 20px; border: 1px solid var(--border-subtle);">
-                <h4 style="font-size: 13.5px; color: var(--gold-light); margin-bottom: 14px; text-transform: uppercase;">Sunburst Concentric Model</h4>
+                <h4 style="font-size: 13.5px; color: var(--gold-light); margin-bottom: 14px; text-transform: uppercase;">Concentric Model</h4>
                 <div style="width: 270px; height: 270px; position: relative;">
                   <canvas id="equityConcentricChart"></canvas>
                 </div>
@@ -482,14 +499,13 @@
           </div>
         </section>
 
-        <!-- STEP 7: DOCUMENTS & REVIEW -->
-        <section class="step-pane" id="step-7">
+        <!-- STEP 6: EXECUTIVE REVIEW -->
+        <section class="step-pane" id="step-6">
           <div class="card">
             <div class="card-header">
-              <h2 class="card-title"><i data-lucide="award"></i> Step 7: Executive Review</h2>
+              <h2 class="card-title"><i data-lucide="award"></i> Step 6: Executive Review</h2>
               <button class="btn-primary" id="btnDownloadPDF"><i data-lucide="download"></i> Download Client PDF</button>
             </div>
-
             <div id="reviewSummaryContainer">
               <!-- Consolidated summary rendered dynamically -->
             </div>

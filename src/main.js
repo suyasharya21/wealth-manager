@@ -229,10 +229,9 @@ document.addEventListener('DOMContentLoaded', () => {
     { num: 1, title: 'Client Profile' },
     { num: 2, title: 'Family Details' },
     { num: 3, title: 'Risk Profile' },
-    { num: 4, title: 'Tax Structuring' },
-    { num: 5, title: 'Goals & Investments' },
-    { num: 6, title: 'Insurance' },
-    { num: 7, title: 'Executive Review' }
+    { num: 4, title: 'Asset Allocation & Goals' },
+    { num: 5, title: 'Equity Composition' },
+    { num: 6, title: 'Executive Review' }
   ];
 
   const stepperNav = document.getElementById('stepperNav');
@@ -255,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function goToStep(stepNum) {
-    if (stepNum < 1 || stepNum > 7) return;
+    if (stepNum < 1 || stepNum > 6) return;
     stateManager.update('currentStep', stepNum, `Navigated to Step ${stepNum}`);
     
     document.querySelectorAll('.step-pane').forEach(p => p.classList.remove('active'));
@@ -269,11 +268,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (stepNum === 4) {
       renderGoals();
-    } else if (stepNum === 5) {
       syncCapitalSlidersFromState();
-    } else if (stepNum === 6) {
+    } else if (stepNum === 5) {
       renderEquityCompositionChart();
-    } else if (stepNum === 7) {
+    } else if (stepNum === 6) {
       renderReviewSummary();
       confetti({ particleCount: 60, spread: 70, origin: { y: 0.6 } });
     }
@@ -285,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnNext = document.getElementById('btnNext');
 
     btnPrev.style.visibility = state.currentStep === 1 ? 'hidden' : 'visible';
-    btnNext.innerHTML = state.currentStep === 7 ? 'Submit Application <i data-lucide="check-circle"></i>' : 'Next Step <i data-lucide="arrow-right"></i>';
+    btnNext.innerHTML = state.currentStep === 6 ? 'Submit Application <i data-lucide="check-circle"></i>' : 'Next Step <i data-lucide="arrow-right"></i>';
   }
 
   document.getElementById('btnPrev').addEventListener('click', () => {
@@ -295,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   document.getElementById('btnNext').addEventListener('click', () => {
     const state = stateManager.getState();
-    if (state.currentStep === 7) {
+    if (state.currentStep === 6) {
       stateManager.submitClient();
       alert(`Application for ${state.fullName || 'Client'} Submitted Successfully! Entering Strategic Advisory Dashboard.`);
       showResultsScreen();
@@ -693,50 +691,63 @@ document.addEventListener('DOMContentLoaded', () => {
           
           ${descHTML}
 
-          <div class="form-grid-2" style="margin-bottom: 16px;">
-            <div class="form-group">
-              <label class="form-label">Total Corpus Target (INR):</label>
-              <input type="number" class="form-input goal-target-amount" data-idx="${idx}" value="${goal.targetAmount}" style="background: rgba(0,0,0,0.25);" />
-            </div>
-            <div class="form-group">
-              <label class="form-label">Target Horizon: <span class="lbl-years" data-idx="${idx}" style="color: var(--gold-primary); font-weight: 700;">${goal.targetYears} Years</span></label>
-              <input type="range" class="form-input slider-goal-years" min="1" max="40" value="${goal.targetYears}" data-idx="${idx}" style="accent-color: var(--gold-primary);" />
-            </div>
-          </div>
-
-          <h4 style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.5px;">Sub-Fund Allocation Buckets</h4>
-          
-          <div class="bifurcations-list" style="margin-bottom: 16px;">
-            ${bifurcationsHTML}
-          </div>
-
-          <div style="display: flex; gap: 10px; margin-bottom: 20px; align-items: center; flex-wrap: wrap;">
-            <select class="form-input select-new-bif" data-idx="${idx}" style="width: 240px; padding: 8px 12px; font-size: 12px; background: rgba(10,15,26,0.9); border: 1px solid var(--border-gold);">
-              <option value="Custom Mutual Fund Allocation">Custom Mutual Fund Allocation</option>
-              <option value="HDFC Large and Mid Cap Fund">HDFC Large and Mid Cap Fund</option>
-              <option value="ICICI Prudential Corp Bond Fund">ICICI Prudential Corp Bond Fund</option>
-              <option value="Sweep-in Fixed Deposit (Tier 1)">Sweep-in Fixed Deposit (Tier 1)</option>
-              <option value="ICICI Prudential Short Term Fund (Tier 2)">ICICI Prudential Short Term Fund (Tier 2)</option>
-              <option value="Tata Arbitrage Fund (Tier 3)">Tata Arbitrage Fund (Tier 3)</option>
-              <option value="Liquid Funds (Years 1–2)">Liquid Funds (Years 1–2)</option>
-              <option value="Short & Low Duration Debt (Years 2–3)">Short & Low Duration Debt (Years 2–3)</option>
-              <option value="Conservative Hybrid Fund (Years 4–5)">Conservative Hybrid Fund (Years 4–5)</option>
-            </select>
-            <button class="btn-secondary btnAddBifurcation" data-idx="${idx}" style="padding: 8px 16px; font-size: 12px;"><i data-lucide="plus"></i> Add Bucket</button>
-          </div>
-
-          <!-- Dynamic Projections & Line Graph -->
-          <div class="responsive-grid-goal-path" style="border-top: 1px solid var(--border-subtle); padding-top: 16px;">
-            <div class="projection-table-area" style="overflow-x: auto;">
-              ${projectionHTML}
-            </div>
-            
-            <div style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(0,0,0,0.18); border-radius: var(--radius-sm); padding: 12px; border: 1px solid rgba(255,255,255,0.03); max-height: 160px;">
-              <div style="font-size: 10px; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">Wealth Path</div>
-              <div class="sparkline-container" style="background: rgba(6,8,13,0.5); padding: 6px; border-radius: 4px; border: 1px dashed rgba(212,175,55,0.15);">
-                ${sparklineSVG}
+          <div class="responsive-grid-2" style="grid-template-columns: 1.5fr 1fr; gap: 24px; align-items: start;">
+            <!-- Left Column: Settings and tables -->
+            <div>
+              <div class="form-grid-2" style="margin-bottom: 16px;">
+                <div class="form-group">
+                  <label class="form-label">Total Corpus Target (INR):</label>
+                  <input type="number" class="form-input goal-target-amount" data-idx="${idx}" value="${goal.targetAmount}" style="background: rgba(0,0,0,0.25);" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Target Horizon: <span class="lbl-years" data-idx="${idx}" style="color: var(--gold-primary); font-weight: 700;">${goal.targetYears} Years</span></label>
+                  <input type="range" class="form-input slider-goal-years" min="1" max="40" value="${goal.targetYears}" data-idx="${idx}" style="accent-color: var(--gold-primary);" />
+                </div>
               </div>
-              <div style="font-size: 11px; margin-top: 10px; color: var(--gold-light); font-weight: 700;" class="lbl-blended-yield" data-idx="${idx}">Blended CAGR: ${goal.blendedYield.toFixed(2)}%</div>
+
+              <h4 style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.5px;">Sub-Fund Allocation Buckets</h4>
+              
+              <div class="bifurcations-list" style="margin-bottom: 16px;">
+                ${bifurcationsHTML}
+              </div>
+
+              <div style="display: flex; gap: 10px; margin-bottom: 20px; align-items: center; flex-wrap: wrap;">
+                <select class="form-input select-new-bif" data-idx="${idx}" style="width: 240px; padding: 8px 12px; font-size: 12px; background: rgba(10,15,26,0.9); border: 1px solid var(--border-gold); color: var(--text-primary);">
+                  <option value="Custom Mutual Fund Allocation">Custom Mutual Fund Allocation</option>
+                  <option value="HDFC Large and Mid Cap Fund">HDFC Large and Mid Cap Fund</option>
+                  <option value="ICICI Prudential Corp Bond Fund">ICICI Prudential Corp Bond Fund</option>
+                  <option value="Sweep-in Fixed Deposit (Tier 1)">Sweep-in Fixed Deposit (Tier 1)</option>
+                  <option value="ICICI Prudential Short Term Fund (Tier 2)">ICICI Prudential Short Term Fund (Tier 2)</option>
+                  <option value="Tata Arbitrage Fund (Tier 3)">Tata Arbitrage Fund (Tier 3)</option>
+                  <option value="Liquid Funds (Years 1–2)">Liquid Funds (Years 1–2)</option>
+                  <option value="Short & Low Duration Debt (Years 2–3)">Short & Low Duration Debt (Years 2–3)</option>
+                  <option value="Conservative Hybrid Fund (Years 4–5)">Conservative Hybrid Fund (Years 4–5)</option>
+                </select>
+                <button class="btn-secondary btnAddBifurcation" data-idx="${idx}" style="padding: 8px 16px; font-size: 12px;"><i data-lucide="plus"></i> Add Bucket</button>
+              </div>
+
+              <!-- Dynamic Projections & Line Graph -->
+              <div class="responsive-grid-goal-path" style="border-top: 1px solid var(--border-subtle); padding-top: 16px;">
+                <div class="projection-table-area" style="overflow-x: auto; width: 100%;">
+                  ${projectionHTML}
+                </div>
+                
+                <div style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(0,0,0,0.18); border-radius: var(--radius-sm); padding: 12px; border: 1px solid rgba(255,255,255,0.03); max-height: 160px;">
+                  <div style="font-size: 10px; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">Wealth Path</div>
+                  <div class="sparkline-container" style="background: rgba(6,8,13,0.5); padding: 6px; border-radius: 4px; border: 1px dashed rgba(212,175,55,0.15);">
+                    ${sparklineSVG}
+                  </div>
+                  <div style="font-size: 11px; margin-top: 10px; color: var(--gold-light); font-weight: 700;" class="lbl-blended-yield" data-idx="${idx}">Blended CAGR: ${goal.blendedYield.toFixed(2)}%</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Goal-Specific Pie Chart -->
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.15); border-radius: var(--radius-md); padding: 20px; border: 1px solid var(--border-subtle); height: 100%; min-height: 250px;">
+              <h4 style="font-size: 12px; color: var(--gold-light); margin-bottom: 14px; text-transform: uppercase;">Goal Allocation Chart</h4>
+              <div style="width: 180px; height: 180px; position: relative;">
+                <canvas id="chart-goal-${goal.id}"></canvas>
+              </div>
             </div>
           </div>
         </div>
@@ -848,9 +859,48 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
+    // Render Goal Pie Charts helper
+    (metrics.calculatedGoals || []).forEach(goal => {
+      const canvasId = `chart-goal-${goal.id}`;
+      const canvasEl = document.getElementById(canvasId);
+      if (!canvasEl) return;
+
+      const names = (goal.bifurcations || []).map(b => b.name);
+      const data = (goal.bifurcations || []).map(b => parseFloat(b.allocation || 0));
+
+      const finalNames = names.length > 0 ? names : ['Unallocated Target'];
+      const finalData = data.length > 0 ? data : [parseFloat(goal.targetAmount || 1)];
+
+      if (window.goalPieCharts === undefined) {
+        window.goalPieCharts = {};
+      }
+      if (window.goalPieCharts[goal.id]) {
+        window.goalPieCharts[goal.id].destroy();
+      }
+
+      window.goalPieCharts[goal.id] = new Chart(canvasEl.getContext('2d'), {
+        type: 'pie',
+        data: {
+          labels: finalNames,
+          datasets: [{
+            data: finalData,
+            backgroundColor: ['#d4af37', '#38bdf8', '#a855f7', '#10b981', '#f59e0b', '#ef4444'],
+            borderColor: '#06080d',
+            borderWidth: 1.5
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      });
+    });
+
     if (window.lucide) window.lucide.createIcons();
   }
-
   // Sparkline line generator
   function generateSparklineSVG(dataPoints, width = 160, height = 50) {
     if (!dataPoints || dataPoints.length < 2) return '';
@@ -1019,11 +1069,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!ctx) return;
     
     const dataVals = [
-      state.capitalWeights.equity,
-      state.capitalWeights.debt,
-      state.capitalWeights.alts,
-      state.capitalWeights.re,
-      state.capitalWeights.gold
+      state.capitalWeights.equity !== undefined ? state.capitalWeights.equity : 45,
+      state.capitalWeights.debt !== undefined ? state.capitalWeights.debt : 25,
+      state.capitalWeights.alts !== undefined ? state.capitalWeights.alts : 15,
+      state.capitalWeights.re !== undefined ? state.capitalWeights.re : 10,
+      state.capitalWeights.gold !== undefined ? state.capitalWeights.gold : 5,
+      state.capitalWeights.cash !== undefined ? state.capitalWeights.cash : 0
     ];
     
     if (capDeploymentChartInstance) {
@@ -1033,10 +1084,10 @@ document.addEventListener('DOMContentLoaded', () => {
       capDeploymentChartInstance = new Chart(ctx, {
         type: 'doughnut',
         data: {
-          labels: ['Equity', 'Debt', 'Alternatives', 'Real Estate', 'Gold'],
+          labels: ['Equity', 'Debt', 'Alternatives', 'Real Estate', 'Gold', 'Cash / Liquidity'],
           datasets: [{
             data: dataVals,
-            backgroundColor: ['#d4af37', '#38bdf8', '#a855f7', '#f59e0b', '#10b981'],
+            backgroundColor: ['#d4af37', '#38bdf8', '#a855f7', '#f59e0b', '#10b981', '#94a3b8'],
             borderColor: '#06080d',
             borderWidth: 2
           }]
@@ -1061,7 +1112,8 @@ document.addEventListener('DOMContentLoaded', () => {
       debt: document.getElementById('sliderCapDebt'),
       alts: document.getElementById('sliderCapAlts'),
       re: document.getElementById('sliderCapRE'),
-      gold: document.getElementById('sliderCapGold')
+      gold: document.getElementById('sliderCapGold'),
+      cash: document.getElementById('sliderCapCash')
     };
     
     Object.keys(sliders).forEach(key => {
@@ -1076,7 +1128,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update labels
         const weight = val;
         const amtCr = (weight * 73) / 100;
-        const labelEl = document.getElementById(`lblCapWeight${key === 'alts' ? 'Alts' : key === 're' ? 'RE' : key.charAt(0).toUpperCase() + key.slice(1)}`);
+        const labelEl = document.getElementById(`lblCapWeight\&{key === 'alts' ? 'Alts' : key === 're' ? 'RE' : key === 'cash' ? 'CASH' : key.charAt(0).toUpperCase() + key.slice(1)}`.replace("&", "$"));
         if (labelEl) {
           labelEl.textContent = `${weight}% (₹ ${amtCr.toFixed(2)} Cr)`;
         }
@@ -1105,6 +1157,53 @@ document.addEventListener('DOMContentLoaded', () => {
         renderCapitalDeploymentChart();
       });
     });
+
+    // Age simulation select listener
+    const selectSimulationAge = document.getElementById('selectSimulationAge');
+    if (selectSimulationAge) {
+      selectSimulationAge.addEventListener('change', (e) => {
+        const age = parseInt(e.target.value);
+        const state = stateManager.getState();
+        
+        let w = {};
+        if (age === 35) {
+          w = { equity: 45, debt: 25, alts: 15, re: 10, gold: 5, cash: 0 };
+        } else if (age === 55) {
+          w = { equity: 30, debt: 45, alts: 5, re: 3, gold: 8, cash: 9 };
+        } else if (age === 75) {
+          w = { equity: 0, debt: 75, alts: 0, re: 0, gold: 10, cash: 15 };
+        }
+        
+        state.capitalWeights = w;
+        stateManager.update('capitalWeights', w, `Simulated asset weights at Age ${age}`);
+        
+        // Sync sliders and trigger inputs
+        Object.keys(sliders).forEach(key => {
+          const slider = sliders[key];
+          if (slider) {
+            slider.value = w[key];
+            const amtCr = (w[key] * 73) / 100;
+            const labelEl = document.getElementById(`lblCapWeight\&{key === 'alts' ? 'Alts' : key === 're' ? 'RE' : key === 'cash' ? 'CASH' : key.charAt(0).toUpperCase() + key.slice(1)}`.replace("&", "$"));
+            if (labelEl) {
+              labelEl.textContent = `${w[key]}% (₹ ${amtCr.toFixed(2)} Cr)`;
+            }
+          }
+        });
+        
+        const total = Object.values(w).reduce((a, b) => a + b, 0);
+        const totalEl = document.getElementById('lblCapTotalWeight');
+        const statusCard = document.getElementById('capWeightStatusCard');
+        if (totalEl) totalEl.textContent = `${total}%`;
+        if (statusCard) {
+          statusCard.style.borderColor = 'var(--accent-green)';
+          statusCard.style.background = 'rgba(16, 185, 129, 0.1)';
+          totalEl.style.color = 'var(--accent-green)';
+          document.getElementById('btnNext').disabled = false;
+        }
+        
+        renderCapitalDeploymentChart();
+      });
+    }
   }
 
   function syncCapitalSlidersFromState() {
@@ -1114,17 +1213,18 @@ document.addEventListener('DOMContentLoaded', () => {
       debt: document.getElementById('sliderCapDebt'),
       alts: document.getElementById('sliderCapAlts'),
       re: document.getElementById('sliderCapRE'),
-      gold: document.getElementById('sliderCapGold')
+      gold: document.getElementById('sliderCapGold'),
+      cash: document.getElementById('sliderCapCash')
     };
     
     Object.keys(sliders).forEach(key => {
       const slider = sliders[key];
       if (!slider) return;
-      const weight = state.capitalWeights[key] !== undefined ? state.capitalWeights[key] : (key === 'equity' ? 45 : key === 'debt' ? 25 : key === 'alts' ? 15 : key === 're' ? 10 : 5);
+      const weight = state.capitalWeights[key] !== undefined ? state.capitalWeights[key] : (key === 'equity' ? 45 : key === 'debt' ? 25 : key === 'alts' ? 15 : key === 're' ? 10 : key === 'gold' ? 5 : 0);
       slider.value = weight;
       
       const amtCr = (weight * 73) / 100;
-      const labelEl = document.getElementById(`lblCapWeight${key === 'alts' ? 'Alts' : key === 're' ? 'RE' : key.charAt(0).toUpperCase() + key.slice(1)}`);
+      const labelEl = document.getElementById(`lblCapWeight${key === 'alts' ? 'Alts' : key === 're' ? 'RE' : key === 'cash' ? 'CASH' : key.charAt(0).toUpperCase() + key.slice(1)}`);
       if (labelEl) {
         labelEl.textContent = `${weight}% (₹ ${amtCr.toFixed(2)} Cr)`;
       }
