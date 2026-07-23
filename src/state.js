@@ -6,27 +6,33 @@ const INITIAL_STATE = {
   clientId: null,
   
   // Step 1: Simplified Profile
-  fullName: '',
-  dob: '',
-  pan: '',
-  mobile: '',
-  email: '',
-  occupation: '',
-  businessType: '',
-  startupStage: '',
-  marketCap: '',
-  companyName: '',
-  industry: '',
+  fullName: 'Rushi',
+  dob: '1991-07-24',
+  pan: 'ABCDE1234F',
+  mobile: '+91 98765 43210',
+  email: 'rushi@mumbai.com',
+  occupation: 'Business Owner',
+  businessType: 'Startup Exit',
+  startupStage: 'Growth',
+  marketCap: 'N/A',
+  companyName: 'Bespoke Tech Ventures',
+  industry: 'Technology',
   industryCustom: '',
-  annualIncome: '',
+  annualIncome: '₹ 10 Crore +',
   incomeCustom: '',
-  netWorth: '',
+  netWorth: '₹ 100 Crore +',
   netWorthCustom: '',
-  liquidAssets: '',
-  city: '',
+  liquidAssets: 1000000000,
+  city: 'Mumbai',
   
   // Step 2: Family
-  familyMembers: [],
+  familyMembers: [
+    { name: 'Spouse', relation: 'Spouse', age: 32, dependent: 'Yes' },
+    { name: 'Son 1 (Twin)', relation: 'Son', age: 7, dependent: 'Yes' },
+    { name: 'Son 2 (Twin)', relation: 'Son', age: 7, dependent: 'Yes' },
+    { name: 'Father', relation: 'Father', age: 65, dependent: 'Yes' },
+    { name: 'Mother', relation: 'Mother', age: 65, dependent: 'Yes' }
+  ],
   
   // Step 3: Risk Profile
   riskAnswers: {
@@ -161,6 +167,11 @@ class StateManager {
     const savedActive = localStorage.getItem('elite_wealth_os_active_client');
     if (savedActive) {
       this.state = JSON.parse(savedActive);
+    } else {
+      // Pre-seed with Rushi by default
+      this.state.clientId = 'ELITE-2026-RUSHI';
+      this.state.isDraft = true;
+      this.saveActive();
     }
 
     this.syncVault();
