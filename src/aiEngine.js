@@ -45,7 +45,7 @@ export function computeAIMetrics(state) {
 
   // 5. Tax Reserve Calculation
   const estTaxRate = state.taxRegime === 'New' ? 0.30 : 0.33;
-  const taxReserve = Math.round(annualIncNum * estTaxRate);
+  const taxReserve = state.taxReserve !== undefined ? state.taxReserve : Math.round(annualIncNum * estTaxRate);
 
   // 6. Goal SIP & Lumpsum Math
   const calculatedGoals = (state.goals || []).map(goal => {
@@ -66,7 +66,7 @@ export function computeAIMetrics(state) {
     
     const rBlended = blendedYield / 100;
     
-    if (goal.type === 'Health Emergency Reserve' || goal.type === 'Lifestyle Maintenance Fund') {
+    if (goal.type.includes('Health Emergency') || goal.type.includes('Lifestyle Maintenance')) {
       // Drawdown strategy: Bucket Year-wise Drawdown Illustration
       let balance = totalAlloc;
       const annualWithdrawal = totalAlloc / years;

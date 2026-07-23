@@ -267,7 +267,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.lucide) window.lucide.createIcons();
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    if (stepNum === 7) {
+    if (stepNum === 4) {
+      renderGoals();
+    } else if (stepNum === 5) {
+      syncCapitalSlidersFromState();
+    } else if (stepNum === 6) {
+      renderEquityCompositionChart();
+    } else if (stepNum === 7) {
       renderReviewSummary();
       confetti({ particleCount: 60, spread: 70, origin: { y: 0.6 } });
     }
@@ -867,51 +873,66 @@ document.addEventListener('DOMContentLoaded', () => {
     let newGoal = {
       id: `g-${Date.now()}`,
       type: type,
-      targetAmount: 30000000,
+      targetAmount: 50000000,
       targetYears: 10,
       bifurcations: []
     };
 
-    if (type === 'Health Emergency Reserve') {
+    if (type.includes('Tax Planning Reserve')) {
+      newGoal.targetAmount = 150000000;
+      newGoal.targetYears = 1;
+      newGoal.bifurcations = [
+        { name: 'Aditya Birla Sun Life Liquid Fund', allocation: 80000000, yield: 7.03, access: '1–2 days' },
+        { name: 'Axis Overnight Funds', allocation: 40000000, yield: 5.37, access: '1–2 days' },
+        { name: 'Nippon India Ultra Short Duration Fund', allocation: 30000000, yield: 7.50, access: '1–2 days' }
+      ];
+    } else if (type.includes('Health Emergency Reserve')) {
       newGoal.targetAmount = 30000000;
       newGoal.targetYears = 15;
       newGoal.bifurcations = [
-        { name: 'Sweep-in Fixed Deposit (Tier 1)', allocation: 5000000, yield: 5.8, access: 'Same day' },
-        { name: 'ICICI Prudential Short Term Fund (Tier 2)', allocation: 10000000, yield: 7.25, access: '2–3 days' },
-        { name: 'Tata Arbitrage Fund (Tier 3)', allocation: 15000000, yield: 7.59, access: '3–4 days' }
+        { name: 'Sweep-in Fixed Deposit (Tier 1 - Instant)', allocation: 5000000, yield: 5.8, access: 'Same day' },
+        { name: 'ICICI Prudential Short Term Fund (Tier 2 - Fast)', allocation: 10000000, yield: 7.25, access: '2–3 days' },
+        { name: 'Tata Arbitrage Fund (Tier 3 - Tax-Efficient)', allocation: 15000000, yield: 7.59, access: '3–4 days' }
       ];
-    } else if (type === 'Lifestyle Maintenance Fund') {
+    } else if (type.includes('Lifestyle Maintenance Fund')) {
       newGoal.targetAmount = 50000000;
       newGoal.targetYears = 5;
       newGoal.bifurcations = [
-        { name: 'Liquid Funds (Years 1–2)', allocation: 20000000, yield: 6.75, access: '1–2 days' },
-        { name: 'Short & Low Duration Debt (Years 2–3)', allocation: 20000000, yield: 7.25, access: '2–3 days' },
-        { name: 'Conservative Hybrid Fund (Years 4–5)', allocation: 10000000, yield: 8.5, access: '3–4 days' }
+        { name: 'Years 1–2: Liquid Funds (rolling)', allocation: 20000000, yield: 6.75, access: '1–2 days' },
+        { name: 'Years 2–3: Short / Low Duration Debt Funds', allocation: 20000000, yield: 7.25, access: '2–3 days' },
+        { name: 'Years 4–5: Conservative Hybrid / Debt Fund', allocation: 10000000, yield: 8.5, access: '3–4 days' }
       ];
-    } else if (type === 'Higher Education Planning') {
+    } else if (type.includes('Higher Education Planning')) {
       newGoal.targetAmount = 90000000;
       newGoal.targetYears = 15;
       newGoal.bifurcations = [
         { name: 'Parag Parikh Flexi Cap Fund', allocation: 6000000, yield: 12.0, access: '3–4 days' },
         { name: 'UTI Nifty 50 Index Fund', allocation: 6000000, yield: 11.5, access: '3–4 days' },
-        { name: 'Motilal US S&P 500 Index Fund', allocation: 4000000, yield: 11.0, access: '3–4 days' },
-        { name: 'Motilal NASDAQ 100 ETF', allocation: 4000000, yield: 13.0, access: '3–4 days' }
+        { name: 'Motilal Oswal S&P 500 Index Fund', allocation: 4000000, yield: 11.0, access: '3–4 days' },
+        { name: 'Motilal Oswal NASDAQ 100 ETF', allocation: 4000000, yield: 13.0, access: '3–4 days' }
       ];
-    } else if (type === 'Marriage Planning') {
-      newGoal.targetAmount = 130000000;
+    } else if (type.includes('Marriage Planning')) {
+      newGoal.targetAmount = 30000000;
       newGoal.targetYears = 22;
       newGoal.bifurcations = [
-        { name: 'HDFC Large and Mid Cap Fund', allocation: 18000000, yield: 12.0, access: '3–4 days' },
-        { name: 'ICICI Prudential Corp Bond Fund', allocation: 12000000, yield: 7.5, access: '3–4 days' }
+        { name: 'HDFC Large and Mid Cap Fund (Equity 60%)', allocation: 18000000, yield: 12.0, access: '3–4 days' },
+        { name: 'ICICI Prudential Corporate Bond Fund (Debt 40%)', allocation: 12000000, yield: 7.5, access: '3–4 days' }
       ];
-    } else if (type === 'Health Insurance Portfolio') {
+    } else if (type.includes('Health Insurance Portfolio')) {
       newGoal.targetAmount = 1000000;
       newGoal.targetYears = 1;
       newGoal.bifurcations = [
-        { name: 'HDFC ERGO Optima Secure (Base Floater)', allocation: 150000, yield: 0, access: 'Same day' },
-        { name: 'ManipalCigna Lifetime Health (Global Top-Up)', allocation: 200000, yield: 0, access: 'Same day' },
-        { name: 'Star Health Senior Citizen Red Carpet (Parents)', allocation: 300000, yield: 0, access: 'Same day' },
-        { name: 'ICICI Pru Heart / Cancer Protect (Critical)', allocation: 350000, yield: 0, access: 'Same day' }
+        { name: 'HDFC ERGO Optima Secure (Family Floater, ₹1 Cr Base)', allocation: 150000, yield: 0, access: 'Same day' },
+        { name: 'ManipalCigna Lifetime Health Global (Super Top-Up, ₹1 Cr Global)', allocation: 200000, yield: 0, access: 'Same day' },
+        { name: 'Star Health / Care Senior (Parents, ₹50 Lakhs)', allocation: 300000, yield: 0, access: 'Same day' },
+        { name: 'ICICI Pru Heart / Cancer Protect (Critical Illness, ₹5 Cr Split)', allocation: 350000, yield: 0, access: 'Same day' }
+      ];
+    } else {
+      // Generic Options
+      newGoal.targetAmount = 50000000;
+      newGoal.targetYears = 10;
+      newGoal.bifurcations = [
+        { name: 'Custom Mutual Fund Allocation', allocation: 50000000, yield: 10.0, access: '3–4 days' }
       ];
     }
 
@@ -983,177 +1004,212 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // STEP 4: TAX STRUCTURING & RESERVE PLANNER
-  function renderTaxReservePlan() {
+  // STEP 5: INITIAL CAPITAL DEPLOYMENT (₹73 Cr Base)
+  let capDeploymentChartInstance = null;
+
+  function renderCapitalDeploymentChart() {
     const state = stateManager.getState();
-    const proceedsSelect = document.getElementById('selectGrossProceeds');
-    const customProceedsInput = document.getElementById('inputCustomProceeds');
-    const taxSlabSelect = document.getElementById('selectTaxSlab');
+    const ctx = document.getElementById('capDeploymentChart');
+    if (!ctx) return;
     
-    if (!proceedsSelect || !taxSlabSelect) return;
-
-    let proceeds = parseFloat(proceedsSelect.value);
-    if (proceedsSelect.value === 'Custom' && customProceedsInput) {
-      proceeds = parseFloat(customProceedsInput.value) || 0;
-    }
-
-    const rate = parseFloat(taxSlabSelect.value);
-    const taxReserve = proceeds * rate;
-
-    state.grossProceeds = proceeds;
-    state.taxRate = rate;
-    state.taxReserve = taxReserve;
-    // Notify local state updates (without log spamming)
-    stateManager.state.grossProceeds = proceeds;
-    stateManager.state.taxRate = rate;
-    stateManager.state.taxReserve = taxReserve;
-
-    // Update labels in step view
-    const lblGross = document.getElementById('lblTaxGrossProceeds');
-    const lblRate = document.getElementById('lblTaxRate');
-    const lblReq = document.getElementById('lblTaxReserveReq');
-    const textReserveVal = document.getElementById('taxReserveVal'); // AI sidebar tracker
+    const dataVals = [
+      state.capitalWeights.equity,
+      state.capitalWeights.debt,
+      state.capitalWeights.alts,
+      state.capitalWeights.re,
+      state.capitalWeights.gold
+    ];
     
-    if (lblGross) lblGross.textContent = `₹ ${(proceeds / 10000000).toFixed(2)} Cr`;
-    if (lblRate) lblRate.textContent = `${(rate * 100).toFixed(0)}%`;
-    if (lblReq) lblReq.textContent = `₹ ${(taxReserve / 10000000).toFixed(2)} Cr`;
-    if (textReserveVal) textReserveVal.textContent = `₹ ${(taxReserve / 10000000).toFixed(2)} Cr`;
-
-    // Render installments schedule table rows
-    const tableBody = document.getElementById('tblTaxAdvanceSchedule');
-    if (tableBody) {
-      const q1 = taxReserve * 0.15;
-      const q2 = taxReserve * 0.30;
-      const q3 = taxReserve * 0.30;
-      const q4 = taxReserve * 0.25;
-
-      tableBody.innerHTML = `
-        <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
-          <td style="padding: 4px;">On/before 15 June</td>
-          <td style="padding: 4px;">15%</td>
-          <td style="padding: 4px; font-weight: 700; color: var(--gold-primary);">₹ ${(q1 / 10000000).toFixed(2)} Cr</td>
-        </tr>
-        <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
-          <td style="padding: 4px;">On/before 15 September</td>
-          <td style="padding: 4px;">45%</td>
-          <td style="padding: 4px; font-weight: 700; color: var(--gold-primary);">₹ ${(q2 / 10000000).toFixed(2)} Cr</td>
-        </tr>
-        <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
-          <td style="padding: 4px;">On/before 15 December</td>
-          <td style="padding: 4px;">75%</td>
-          <td style="padding: 4px; font-weight: 700; color: var(--gold-primary);">₹ ${(q3 / 10000000).toFixed(2)} Cr</td>
-        </tr>
-        <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
-          <td style="padding: 4px;">On/before 15 March</td>
-          <td style="padding: 4px;">100%</td>
-          <td style="padding: 4px; font-weight: 700; color: var(--gold-primary);">₹ ${(q4 / 10000000).toFixed(2)} Cr</td>
-        </tr>
-      `;
-    }
-
-    // Render instruments list
-    const instList = document.getElementById('listTaxAllocInstruments');
-    if (instList) {
-      const a1 = taxReserve * 8 / 15;
-      const a2 = taxReserve * 4 / 15;
-      const a3 = taxReserve * 3 / 15;
-
-      instList.innerHTML = `
-        <div style="background: rgba(255,255,255,0.01); border: 1px dashed rgba(212,175,55,0.25); padding: 8px; border-radius: 4px;">
-          <div style="font-size: 10.5px; font-weight: 700; color: var(--text-primary);">Aditya Birla Sun Life Liquid Fund</div>
-          <div style="font-size: 10.5px; color: var(--gold-light);">Alloc: ₹ ${(a1 / 10000000).toFixed(2)} Cr | Yield: 7.03%</div>
-        </div>
-        <div style="background: rgba(255,255,255,0.01); border: 1px dashed rgba(212,175,55,0.25); padding: 8px; border-radius: 4px; margin-top: 6px;">
-          <div style="font-size: 10.5px; font-weight: 700; color: var(--text-primary);">Axis Overnight Funds</div>
-          <div style="font-size: 10.5px; color: var(--gold-light);">Alloc: ₹ ${(a2 / 10000000).toFixed(2)} Cr | Yield: 5.37%</div>
-        </div>
-        <div style="background: rgba(255,255,255,0.01); border: 1px dashed rgba(212,175,55,0.25); padding: 8px; border-radius: 4px; margin-top: 6px;">
-          <div style="font-size: 10.5px; font-weight: 700; color: var(--text-primary);">Nippon India Ultra Short Duration Fund</div>
-          <div style="font-size: 10.5px; color: var(--gold-light);">Alloc: ₹ ${(a3 / 10000000).toFixed(2)} Cr | Yield: 7.50%</div>
-        </div>
-      `;
-    }
-
-    const lblOffset = document.getElementById('lblTaxInterestOffset');
-    if (lblOffset) {
-      const interestOffset = taxReserve * 0.068 * 0.7; // ~6.8% yield average
-      lblOffset.textContent = `Estimated Offset Yield: ~₹ ${(interestOffset / 10000000).toFixed(2)} Cr (reinvestment efficiency)`;
-    }
-  }
-
-  const proceedsSelect = document.getElementById('selectGrossProceeds');
-  const customProceedsInput = document.getElementById('inputCustomProceeds');
-  const taxSlabSelect = document.getElementById('selectTaxSlab');
-
-  if (proceedsSelect) {
-    proceedsSelect.addEventListener('change', (e) => {
-      const isCustom = e.target.value === 'Custom';
-      const customGroup = document.getElementById('proceedsCustomGroup');
-      if (customGroup) customGroup.style.display = isCustom ? 'block' : 'none';
-      renderTaxReservePlan();
-      stateManager.notify(); // trigger global update
-    });
-  }
-
-  if (customProceedsInput) {
-    customProceedsInput.addEventListener('input', () => {
-      renderTaxReservePlan();
-      stateManager.notify();
-    });
-  }
-
-  if (taxSlabSelect) {
-    taxSlabSelect.addEventListener('change', () => {
-      renderTaxReservePlan();
-      stateManager.notify();
-    });
-  }
-
-  // Pre-fill tax proceeds selections from loaded state
-  function syncTaxInputsFromState() {
-    const state = stateManager.getState();
-    if (!proceedsSelect || !taxSlabSelect) return;
-
-    if ([500000000, 1000000000, 1500000000, 2000000000].includes(state.grossProceeds)) {
-      proceedsSelect.value = state.grossProceeds;
-      if (customProceedsInput) customProceedsInput.value = state.grossProceeds;
-      const customGroup = document.getElementById('proceedsCustomGroup');
-      if (customGroup) customGroup.style.display = 'none';
+    if (capDeploymentChartInstance) {
+      capDeploymentChartInstance.data.datasets[0].data = dataVals;
+      capDeploymentChartInstance.update();
     } else {
-      proceedsSelect.value = 'Custom';
-      if (customProceedsInput) customProceedsInput.value = state.grossProceeds || 1000000000;
-      const customGroup = document.getElementById('proceedsCustomGroup');
-      if (customGroup) customGroup.style.display = 'block';
+      capDeploymentChartInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Equity', 'Debt', 'Alternatives', 'Real Estate', 'Gold'],
+          datasets: [{
+            data: dataVals,
+            backgroundColor: ['#d4af37', '#38bdf8', '#a855f7', '#f59e0b', '#10b981'],
+            borderColor: '#06080d',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { color: '#94a3b8', font: { size: 10 } }
+            }
+          }
+        }
+      });
     }
-
-    taxSlabSelect.value = state.taxRate || 0.15;
-    renderTaxReservePlan();
   }
 
-  // Add syncTaxInputsFromState to showWizardScreen
+  function initCapitalDeploymentSliders() {
+    const sliders = {
+      equity: document.getElementById('sliderCapEquity'),
+      debt: document.getElementById('sliderCapDebt'),
+      alts: document.getElementById('sliderCapAlts'),
+      re: document.getElementById('sliderCapRE'),
+      gold: document.getElementById('sliderCapGold')
+    };
+    
+    Object.keys(sliders).forEach(key => {
+      const slider = sliders[key];
+      if (!slider) return;
+      
+      slider.addEventListener('input', (e) => {
+        const val = parseInt(e.target.value);
+        const state = stateManager.getState();
+        state.capitalWeights[key] = val;
+        
+        // Update labels
+        const weight = val;
+        const amtCr = (weight * 73) / 100;
+        const labelEl = document.getElementById(`lblCapWeight${key === 'alts' ? 'Alts' : key === 're' ? 'RE' : key.charAt(0).toUpperCase() + key.slice(1)}`);
+        if (labelEl) {
+          labelEl.textContent = `${weight}% (₹ ${amtCr.toFixed(2)} Cr)`;
+        }
+        
+        // Calculate total sum
+        const total = Object.values(state.capitalWeights).reduce((a, b) => a + b, 0);
+        const totalEl = document.getElementById('lblCapTotalWeight');
+        const statusCard = document.getElementById('capWeightStatusCard');
+        
+        if (totalEl) totalEl.textContent = `${total}%`;
+        if (statusCard) {
+          if (total === 100) {
+            statusCard.style.borderColor = 'var(--accent-green)';
+            statusCard.style.background = 'rgba(16, 185, 129, 0.1)';
+            totalEl.style.color = 'var(--accent-green)';
+            document.getElementById('btnNext').disabled = false;
+          } else {
+            statusCard.style.borderColor = 'var(--accent-red)';
+            statusCard.style.background = 'rgba(239, 68, 68, 0.1)';
+            totalEl.style.color = 'var(--accent-red)';
+            document.getElementById('btnNext').disabled = true;
+          }
+        }
+        
+        stateManager.update('capitalWeights', state.capitalWeights);
+        renderCapitalDeploymentChart();
+      });
+    });
+  }
+
+  function syncCapitalSlidersFromState() {
+    const state = stateManager.getState();
+    const sliders = {
+      equity: document.getElementById('sliderCapEquity'),
+      debt: document.getElementById('sliderCapDebt'),
+      alts: document.getElementById('sliderCapAlts'),
+      re: document.getElementById('sliderCapRE'),
+      gold: document.getElementById('sliderCapGold')
+    };
+    
+    Object.keys(sliders).forEach(key => {
+      const slider = sliders[key];
+      if (!slider) return;
+      const weight = state.capitalWeights[key] !== undefined ? state.capitalWeights[key] : (key === 'equity' ? 45 : key === 'debt' ? 25 : key === 'alts' ? 15 : key === 're' ? 10 : 5);
+      slider.value = weight;
+      
+      const amtCr = (weight * 73) / 100;
+      const labelEl = document.getElementById(`lblCapWeight${key === 'alts' ? 'Alts' : key === 're' ? 'RE' : key.charAt(0).toUpperCase() + key.slice(1)}`);
+      if (labelEl) {
+        labelEl.textContent = `${weight}% (₹ ${amtCr.toFixed(2)} Cr)`;
+      }
+    });
+    
+    const total = Object.values(state.capitalWeights).reduce((a, b) => a + b, 0);
+    const totalEl = document.getElementById('lblCapTotalWeight');
+    const statusCard = document.getElementById('capWeightStatusCard');
+    if (totalEl) totalEl.textContent = `${total}%`;
+    if (statusCard) {
+      if (total === 100) {
+        statusCard.style.borderColor = 'var(--accent-green)';
+        statusCard.style.background = 'rgba(16, 185, 129, 0.1)';
+        totalEl.style.color = 'var(--accent-green)';
+        document.getElementById('btnNext').disabled = false;
+      } else {
+        statusCard.style.borderColor = 'var(--accent-red)';
+        statusCard.style.background = 'rgba(239, 68, 68, 0.1)';
+        totalEl.style.color = 'var(--accent-red)';
+        document.getElementById('btnNext').disabled = true;
+      }
+    }
+    renderCapitalDeploymentChart();
+  }
+
+  // STEP 6: EQUITY PORTFOLIO COMPOSITION (₹32.85 Cr Sleeve)
+  let equityChartInstance = null;
+  function renderEquityCompositionChart() {
+    const ctx = document.getElementById('equityConcentricChart');
+    if (!ctx) return;
+    
+    if (equityChartInstance) {
+      equityChartInstance.destroy();
+    }
+    
+    equityChartInstance = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        datasets: [
+          // Dataset 0: Outer Ring (Level 2 Sectors)
+          {
+            data: [
+              16.8, 8.4, 34.8, // Domestic: Financials (28% of 60%), IT (14% of 60%), Others (58% of 60%)
+              16.5, 13.5,     // Foreign: US S&P 500 (55% of 30%), US Tech/Global/EM (45% of 30%)
+              10.0            // Mutual Funds: Multi-Asset (10%)
+            ],
+            backgroundColor: [
+              '#b59023', '#d4af37', '#e5c158', // Domestic Golds
+              '#1d4ed8', '#38bdf8',            // Foreign Blues
+              '#8b5cf6'                        // Mutual Funds Purple
+            ],
+            label: 'Sectors & Categories',
+            weight: 1.5
+          },
+          // Dataset 1: Inner Ring (Level 1 Categories)
+          {
+            data: [60, 30, 10],
+            backgroundColor: [
+              '#d4af37', // Domestic gold
+              '#38bdf8', // Foreign blue
+              '#a855f7'  // Mutual Funds purple
+            ],
+            label: 'Macro Sleeves',
+            weight: 1.0
+          }
+        ],
+        labels: [
+          'Financial Services', 'IT', 'Consumer & Healthcare', 
+          'US S&P 500', 'US Tech & Developed', 
+          'Multi-Asset Mutual Funds'
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { color: '#94a3b8', font: { size: 9 } }
+          }
+        }
+      }
+    });
+  }
+
+  // Add syncCapitalSlidersFromState to showWizardScreen
   const originalShowWizardScreen = showWizardScreen;
   showWizardScreen = function() {
     originalShowWizardScreen();
-    syncTaxInputsFromState();
+    syncCapitalSlidersFromState();
   };
-
-
-  // STEP 7: INSURANCE
-  initSearchableDropdown({
-    container: document.getElementById('dd-hasLifeInsurance'),
-    options: [{ label: 'Yes, fully covered', value: 'Yes' }, { label: 'No, need cover', value: 'No' }],
-    placeholder: 'Select option',
-    value: activeTax.hasLifeInsurance,
-    onChange: val => stateManager.update('hasLifeInsurance', val)
-  });
-
-  initSearchableDropdown({
-    container: document.getElementById('dd-hasHealthInsurance'),
-    options: [{ label: 'Yes, fully covered', value: 'Yes' }, { label: 'No, need cover', value: 'No' }],
-    placeholder: 'Select option',
-    value: activeTax.hasHealthInsurance,
-    onChange: val => stateManager.update('hasHealthInsurance', val)
-  });
 
   // STEP 8: REVIEW SUMMARY
   function renderReviewSummary() {
@@ -1284,7 +1340,13 @@ document.addEventListener('DOMContentLoaded', () => {
   stateManager.subscribe(() => {
     renderFamilyMembers();
     renderGoals();
-    renderTaxReservePlan();
+    
+    // safe update of capital sliders if step is active
+    const activeStep = stateManager.getState().currentStep;
+    if (activeStep === 5) {
+      renderCapitalDeploymentChart();
+    }
+    
     updateAISidebar();
 
     const textStatus = document.getElementById('saveStatusText');
@@ -1292,6 +1354,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // INITIAL STATE VIEW CONFIG
+  initCapitalDeploymentSliders();
   initResultsScreen();
   showHomeScreen();
 });

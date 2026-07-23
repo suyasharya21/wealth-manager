@@ -299,130 +299,184 @@
           </div>
         </section>
 
-        <!-- STEP 4: TAX INFORMATION -->
+        <!-- STEP 4: GOALS, RUNWAYS & PROJECTIONS -->
         <section class="step-pane" id="step-4">
           <div class="card">
-            <div class="card-header">
-              <h2 class="card-title"><i data-lucide="receipt"></i> Step 4: Tax Structuring & Reserve</h2>
-            </div>
-
-            <div class="form-grid-2" style="margin-bottom: 20px;">
-              <div class="form-group">
-                <label class="form-label">Gross Transaction Proceeds (INR):</label>
-                <select id="selectGrossProceeds" class="form-input" style="background: rgba(10,15,26,0.9); border: 1px solid var(--border-gold);">
-                  <option value="500000000">₹ 50 Crore proceeds</option>
-                  <option value="1000000000" selected>₹ 100 Crore proceeds (Singhania Deal)</option>
-                  <option value="1500000000">₹ 150 Crore proceeds</option>
-                  <option value="2000000000">₹ 200 Crore proceeds</option>
-                  <option value="Custom">Custom Transaction proceeds...</option>
-                </select>
-              </div>
-
-              <div class="form-group" id="proceedsCustomGroup" style="display: none;">
-                <label class="form-label">Custom Proceeds Size (INR):</label>
-                <input type="number" id="inputCustomProceeds" class="form-input" value="1000000000" placeholder="e.g. 1000000000" />
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">Applicable Tax Slab / Effective Rate:</label>
-                <select id="selectTaxSlab" class="form-input" style="background: rgba(10,15,26,0.9); border: 1px solid var(--border-gold);">
-                  <option value="0.15" selected>Flat 15% (Resident India HNI > 50Cr Proceeds)</option>
-                  <option value="0.20">Flat 20% (Standard LTCG Rate)</option>
-                  <option value="0.10">Flat 10% (Indexation / Offmarket Rate)</option>
-                  <option value="0.30">Flat 30% (Standard Business Income Rate)</option>
-                </select>
-              </div>
-            </div>
-
-            <!-- Tax Planning Reserve Summary Card -->
-            <div class="responsive-grid-3" style="background: rgba(212, 175, 55, 0.06); border: 1px solid var(--border-gold); padding: 16px; border-radius: var(--radius-md); margin-bottom: 20px;">
-              <div>
-                <div style="font-size: 11px; color: var(--text-secondary);">GROSS TRANSACTION</div>
-                <div style="font-size: 18px; font-weight: 700; color: var(--text-primary);" id="lblTaxGrossProceeds">₹ 100.00 Cr</div>
-              </div>
-              <div>
-                <div style="font-size: 11px; color: var(--text-secondary);">EFFECTIVE RATE</div>
-                <div style="font-size: 18px; font-weight: 700; color: var(--gold-light);" id="lblTaxRate">15%</div>
-              </div>
-              <div>
-                <div style="font-size: 11px; color: var(--text-secondary);">TAX RESERVE REQUIRED</div>
-                <div style="font-size: 18px; font-weight: 700; color: var(--accent-red);" id="lblTaxReserveReq">₹ 15.00 Cr</div>
-              </div>
-            </div>
-
-            <!-- Installments and Allocation lists -->
-            <div class="responsive-grid-2" style="margin-top: 16px; border-top: 1px solid var(--border-subtle); padding-top: 20px;">
-              <div>
-                <h4 style="font-size: 13px; color: var(--gold-primary); text-transform: uppercase; margin-bottom: 10px;">Advance Tax Drawdown Schedule</h4>
-                <div class="table-responsive">
-                  <table class="vault-table" style="font-size: 11px; width: 100%;">
-                    <thead>
-                      <tr style="border-bottom: 1px solid rgba(255,255,255,0.06); text-align: left;">
-                        <th style="padding: 4px;">Due Date</th>
-                        <th style="padding: 4px;">Cumulative %</th>
-                        <th style="padding: 4px;">Amount Released (Cr)</th>
-                      </tr>
-                    </thead>
-                    <tbody id="tblTaxAdvanceSchedule">
-                      <!-- Dynamic installments rows -->
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <div>
-                <h4 style="font-size: 13px; color: var(--gold-primary); text-transform: uppercase; margin-bottom: 10px;">Instrument Allocations (blended ~6.66%)</h4>
-                <div style="display: flex; flex-direction: column; gap: 8px;" id="listTaxAllocInstruments">
-                  <!-- Dynamic Axis overnight, nippon, aditya birla entries -->
-                </div>
-                <div style="font-size: 10.5px; color: var(--accent-green); margin-top: 10px; font-style: italic;" id="lblTaxInterestOffset">
-                  Estimated Offset Yield: ~₹0.70 Cr (reinvestment efficiency)
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </section>
-
-        <!-- STEP 5: FINANCIAL GOALS & INVESTMENT PREFERENCES -->
-        <section class="step-pane" id="step-5">
-          <div class="card">
             <div class="card-header" style="flex-wrap: wrap; gap: 14px;">
-              <h2 class="card-title"><i data-lucide="target"></i> Step 5: Bespoke Wealth Goals Planner</h2>
+              <h2 class="card-title"><i data-lucide="target"></i> Step 4: Goals, Runways & Projections</h2>
               <div style="display: flex; gap: 10px; align-items: center;">
                 <select id="selectGoalType" class="form-input" style="width: 260px; padding: 8px 12px; font-size: 13px; background: rgba(10,15,26,0.9); border: 1px solid var(--border-gold);">
-                  <option value="Health Emergency Reserve">Health Emergency Reserve (₹3 Cr Target)</option>
-                  <option value="Lifestyle Maintenance Fund">Lifestyle Maintenance Fund (₹5 Cr Target)</option>
-                  <option value="Higher Education Planning">Higher Education Planning (₹9 Cr Target)</option>
-                  <option value="Marriage Planning">Marriage Planning (₹13 Cr Target)</option>
-                  <option value="Health Insurance Portfolio">Health Insurance Portfolio (₹10L Premium)</option>
+                  <optgroup label="HNI Client Goals">
+                    <option value="Tax Planning Reserve (₹15 Cr)">Tax Planning Reserve (₹15 Cr)</option>
+                    <option value="Health Emergency Reserve (₹3 Cr)" selected>Health Emergency Reserve (₹3 Cr)</option>
+                    <option value="Lifestyle Maintenance Fund (₹5 Cr)">Lifestyle Maintenance Fund (₹5 Cr)</option>
+                    <option value="Higher Education Planning (₹2 Cr)">Higher Education Planning (₹2 Cr)</option>
+                    <option value="Marriage Planning (₹3 Cr)">Marriage Planning (₹3 Cr)</option>
+                    <option value="Health Insurance Portfolio">Health Insurance Portfolio</option>
+                  </optgroup>
+                  <optgroup label="Generic Goals (Scale)">
+                    <option value="Retirement Corpus">Retirement Corpus</option>
+                    <option value="Philanthropy/Endowment">Philanthropy/Endowment</option>
+                    <option value="Venture Capital / Angel Fund">Venture Capital / Angel Fund</option>
+                    <option value="Real Estate Acquisition">Real Estate Acquisition</option>
+                    <option value="Legacy/Estate Transfer">Legacy/Estate Transfer</option>
+                  </optgroup>
                 </select>
                 <button class="btn-primary" id="btnAddGoal" style="padding: 8px 16px;"><i data-lucide="plus"></i> Add Goal</button>
               </div>
             </div>
 
             <div id="goalsContainer">
-              <!-- Dynamic goal cards with calculated SIP & Lumpsum math -->
+              <!-- Dynamic goal cards with calculated drawdown/growth projections -->
             </div>
           </div>
         </section>
 
-        <!-- STEP 6: INSURANCE -->
+        <!-- STEP 5: INITIAL CAPITAL DEPLOYMENT -->
+        <section class="step-pane" id="step-5">
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title"><i data-lucide="pie-chart"></i> Step 5: Initial Capital Deployment (₹73 Cr Base)</h2>
+              <span class="brand-tag">Age 35 Asset Allocation</span>
+            </div>
+
+            <div class="responsive-grid-2" style="align-items: center; margin-top: 10px;">
+              <div>
+                <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5;">
+                  Allocate your base liquid corpus of <strong>₹73 Crore</strong> at Age 35. Customize weights below. Ensure the total allocation sums to exactly <strong>100%</strong> to proceed.
+                </p>
+
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                  <div class="form-group" style="margin: 0;">
+                    <label class="form-label" style="display: flex; justify-content: space-between;">
+                      <span>Equity Allocation</span>
+                      <strong id="lblCapWeightEquity" style="color: var(--gold-primary);">45% (₹32.85 Cr)</strong>
+                    </label>
+                    <input type="range" class="cap-weight-slider" id="sliderCapEquity" min="0" max="100" step="1" value="45" style="accent-color: var(--gold-primary); height: 6px; padding: 0;" />
+                  </div>
+
+                  <div class="form-group" style="margin: 0;">
+                    <label class="form-label" style="display: flex; justify-content: space-between;">
+                      <span>Debt Allocation</span>
+                      <strong id="lblCapWeightDebt" style="color: var(--gold-primary);">25% (₹18.25 Cr)</strong>
+                    </label>
+                    <input type="range" class="cap-weight-slider" id="sliderCapDebt" min="0" max="100" step="1" value="25" style="accent-color: var(--gold-primary); height: 6px; padding: 0;" />
+                  </div>
+
+                  <div class="form-group" style="margin: 0;">
+                    <label class="form-label" style="display: flex; justify-content: space-between;">
+                      <span>Alternatives (AIF/PMS)</span>
+                      <strong id="lblCapWeightAlts" style="color: var(--gold-primary);">15% (₹10.95 Cr)</strong>
+                    </label>
+                    <input type="range" class="cap-weight-slider" id="sliderCapAlts" min="0" max="100" step="1" value="15" style="accent-color: var(--gold-primary); height: 6px; padding: 0;" />
+                  </div>
+
+                  <div class="form-group" style="margin: 0;">
+                    <label class="form-label" style="display: flex; justify-content: space-between;">
+                      <span>Real Estate</span>
+                      <strong id="lblCapWeightRE" style="color: var(--gold-primary);">10% (₹7.30 Cr)</strong>
+                    </label>
+                    <input type="range" class="cap-weight-slider" id="sliderCapRE" min="0" max="100" step="1" value="10" style="accent-color: var(--gold-primary); height: 6px; padding: 0;" />
+                  </div>
+
+                  <div class="form-group" style="margin: 0;">
+                    <label class="form-label" style="display: flex; justify-content: space-between;">
+                      <span>Physical Gold</span>
+                      <strong id="lblCapWeightGold" style="color: var(--gold-primary);">5% (₹3.65 Cr)</strong>
+                    </label>
+                    <input type="range" class="cap-weight-slider" id="sliderCapGold" min="0" max="100" step="1" value="5" style="accent-color: var(--gold-primary); height: 6px; padding: 0;" />
+                  </div>
+                </div>
+
+                <div style="margin-top: 24px; padding: 14px; border-radius: var(--radius-sm); display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-subtle); background: rgba(0,0,0,0.25);" id="capWeightStatusCard">
+                  <div style="font-size: 13px; font-weight: 700;">Total Weight Allocated:</div>
+                  <div style="font-size: 18px; font-weight: 800;" id="lblCapTotalWeight">100%</div>
+                </div>
+              </div>
+
+              <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.15); border-radius: var(--radius-md); padding: 20px; border: 1px solid var(--border-subtle);">
+                <h4 style="font-size: 13.5px; color: var(--gold-light); margin-bottom: 14px; text-transform: uppercase;">Asset Deployment Breakdown</h4>
+                <div style="width: 260px; height: 260px; position: relative;">
+                  <canvas id="capDeploymentChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- STEP 6: EQUITY PORTFOLIO COMPOSITION -->
         <section class="step-pane" id="step-6">
           <div class="card">
             <div class="card-header">
-              <h2 class="card-title"><i data-lucide="shield-check"></i> Step 6: Insurance Check</h2>
+              <h2 class="card-title"><i data-lucide="layers"></i> Step 6: Equity Portfolio Composition (₹32.85 Cr Sleeve)</h2>
+              <span class="brand-tag">Deep-Dive Sunburst Model</span>
             </div>
 
-            <div class="form-grid-2">
-              <div class="form-group">
-                <label class="form-label">Do you have active Term Life Insurance?</label>
-                <div id="dd-hasLifeInsurance"></div>
+            <div class="responsive-grid-2" style="align-items: center; margin-top: 10px;">
+              <div>
+                <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.5;">
+                  Deep-dive analysis of your Equity sleeve. Visualized using a concentric hierarchical donut model split between domestic sectors, foreign allocations, and direct mutual funds.
+                </p>
+
+                <div class="table-responsive">
+                  <table class="vault-table" style="font-size: 11px; width: 100%;">
+                    <thead>
+                      <tr style="border-bottom: 1px solid rgba(255,255,255,0.06); text-align: left;">
+                        <th style="padding: 6px;">Sleeve Category</th>
+                        <th style="padding: 6px;">Sector / Allocation</th>
+                        <th style="padding: 6px; text-align: right;">Weight</th>
+                        <th style="padding: 6px; text-align: right;">Rupees (Cr)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- DOMESTIC -->
+                      <tr style="border-bottom: 1px dashed rgba(255,255,255,0.04);">
+                        <td rowspan="3" style="font-weight: 700; color: var(--gold-primary); vertical-align: middle;">Domestic Equity (60%)</td>
+                        <td>Financial Services</td>
+                        <td style="text-align: right;">28%</td>
+                        <td style="text-align: right; color: var(--accent-green);">₹ 5.52 Cr</td>
+                      </tr>
+                      <tr style="border-bottom: 1px dashed rgba(255,255,255,0.04);">
+                        <td>Information Technology</td>
+                        <td style="text-align: right;">14%</td>
+                        <td style="text-align: right; color: var(--accent-green);">₹ 2.76 Cr</td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                        <td>Consumer, Health, Ind. & Energy</td>
+                        <td style="text-align: right;">58%</td>
+                        <td style="text-align: right; color: var(--accent-green);">₹ 11.43 Cr</td>
+                      </tr>
+                      
+                      <!-- FOREIGN -->
+                      <tr style="border-bottom: 1px dashed rgba(255,255,255,0.04);">
+                        <td rowspan="2" style="font-weight: 700; color: var(--accent-blue); vertical-align: middle;">Foreign Markets (30%)</td>
+                        <td>US Large Cap / S&P 500</td>
+                        <td style="text-align: right;">55%</td>
+                        <td style="text-align: right; color: var(--accent-green);">₹ 5.42 Cr</td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                        <td>US Tech, Global & EM</td>
+                        <td style="text-align: right;">45%</td>
+                        <td style="text-align: right; color: var(--accent-green);">₹ 4.44 Cr</td>
+                      </tr>
+
+                      <!-- MUTUAL FUNDS -->
+                      <tr>
+                        <td style="font-weight: 700; color: var(--accent-purple); vertical-align: middle;">Mutual Funds (10%)</td>
+                        <td>Multi-Asset Allocation</td>
+                        <td style="text-align: right;">100%</td>
+                        <td style="text-align: right; color: var(--accent-green);">₹ 3.29 Cr</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
 
-              <div class="form-group">
-                <label class="form-label">Do you have active Health Insurance?</label>
-                <div id="dd-hasHealthInsurance"></div>
+              <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.15); border-radius: var(--radius-md); padding: 20px; border: 1px solid var(--border-subtle);">
+                <h4 style="font-size: 13.5px; color: var(--gold-light); margin-bottom: 14px; text-transform: uppercase;">Sunburst Concentric Model</h4>
+                <div style="width: 270px; height: 270px; position: relative;">
+                  <canvas id="equityConcentricChart"></canvas>
+                </div>
               </div>
             </div>
           </div>
@@ -494,10 +548,10 @@
     <div class="card" style="border: 1px solid var(--border-gold); background: linear-gradient(180deg, rgba(20, 28, 45, 0.9) 0%, rgba(10, 15, 26, 0.9) 100%);">
       <div class="card-header" style="border-bottom: 1px solid var(--border-gold); padding-bottom: 16px;">
         <div style="display: flex; align-items: center; gap: 14px;">
-          <div class="brand-logo" style="width: 36px; height: 36px; font-size: 16px;">AI</div>
+          <div class="brand-logo" style="width: 36px; height: 36px; font-size: 16px;">OS</div>
           <div>
-            <h2 style="font-size: 22px; color: var(--gold-light);">Strategic Wealth Dashboard & AI Recommendations</h2>
-            <p style="font-size: 12px; color: var(--text-secondary);">Simulate capital growth rate, ask direct HNI estate planning questions, and review bespoke assets map.</p>
+            <h2 style="font-size: 22px; color: var(--gold-light);">Strategic Wealth Command Center & AI Simulations</h2>
+            <p style="font-size: 12px; color: var(--text-secondary);">Recalculate portfolio projections, check advance tax offsets, and run real-time stress tests.</p>
           </div>
         </div>
         <div style="display: flex; gap: 12px;">
@@ -506,148 +560,46 @@
         </div>
       </div>
 
-      <div class="results-wrapper">
-        <div class="content-area">
-          <!-- SIMULATION SLIDERS -->
-          <div class="card" style="background: rgba(6, 8, 13, 0.6); border: 1px solid var(--border-subtle); margin-bottom: 20px; padding: 20px;">
-            <h3 style="font-size: 16px; color: var(--gold-light); margin-bottom: 16px;"><i data-lucide="sliders" style="color: var(--gold-primary); vertical-align: middle; margin-right: 6px;"></i> Dynamic Capital Growth Simulator</h3>
-            
-            <div class="form-grid-3" style="margin-bottom: 20px;">
-              <div class="form-group">
-                <label class="form-label">Monthly SIP Amount: <span id="valSip" style="color: var(--gold-primary); float: right;">₹ 2,50,000</span></label>
-                <input type="range" id="sliderSip" min="10000" max="1000000" step="10000" value="250000" style="accent-color: var(--gold-primary);" />
-              </div>
-              <div class="form-group">
-                <label class="form-label">Investment Duration: <span id="valYears" style="color: var(--gold-primary); float: right;">15 Years</span></label>
-                <input type="range" id="sliderYears" min="1" max="30" step="1" value="15" style="accent-color: var(--gold-primary);" />
-              </div>
-              <div class="form-group">
-                <label class="form-label">Expected Annual Return: <span id="valRate" style="color: var(--gold-primary); float: right;">12%</span></label>
-                <input type="range" id="sliderRate" min="3" max="30" step="0.5" value="12" style="accent-color: var(--gold-primary);" />
-              </div>
-            </div>
-
-            <!-- MATH DISPLAY CARDS -->
-            <div class="responsive-grid-3" style="margin-bottom: 20px;">
-              <div style="background: rgba(10, 15, 26, 0.8); border: 1px solid var(--border-subtle); padding: 14px; border-radius: var(--radius-sm); text-align: center;">
-                <div style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase;">Total Principal Invested</div>
-                <div style="font-size: 20px; font-weight: 800; color: #94a3b8; margin-top: 4px;" id="resTotalPrincipal">₹ 4,50,00,000</div>
-              </div>
-              <div style="background: rgba(10, 15, 26, 0.8); border: 1px solid var(--border-subtle); padding: 14px; border-radius: var(--radius-sm); text-align: center;">
-                <div style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase;">Estimated Future Wealth</div>
-                <div style="font-size: 20px; font-weight: 800; color: var(--gold-primary); margin-top: 4px;" id="resFutureValue">₹ 12,61,00,000</div>
-              </div>
-              <div style="background: rgba(10, 15, 26, 0.8); border: 1px solid var(--border-subtle); padding: 14px; border-radius: var(--radius-sm); text-align: center;">
-                <div style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase;">Capital Yield Gained</div>
-                <div style="font-size: 20px; font-weight: 800; color: var(--accent-green); margin-top: 4px;" id="resTotalGain">₹ 8,11,00,000</div>
-              </div>
-            </div>
-
-            <!-- SCENARIO COMPARISON SLIDER & COMPARISON TABLE -->
-            <div style="margin-top: 14px; border-top: 1px solid var(--border-subtle); padding-top: 14px;">
-              <div class="form-group" style="margin-bottom: 12px;">
-                <label class="form-label">Strategic return Booster Delta (Stress Test): <span id="valBooster" style="color: var(--gold-primary); float: right;">+0%</span></label>
-                <input type="range" id="sliderBooster" min="-3" max="3" step="0.5" value="0" style="accent-color: var(--gold-primary);" />
-              </div>
-
-              <div class="responsive-grid-3" style="gap: 10px; background: rgba(10,15,26,0.6); padding: 10px; border-radius: var(--radius-sm); font-size: 11.5px; border: 1px dashed var(--border-gold);">
-                <div>Base Return: <strong id="valBaseEst">₹ 0</strong></div>
-                <div>Adjusted Return: <strong id="valBoostedEst" style="color: var(--gold-primary);">₹ 0</strong></div>
-                <div>Wealth Delta: <strong id="valDeltaEst" style="color: var(--accent-green);">₹ 0</strong></div>
-              </div>
-            </div>
-
-            <!-- CHART AREA -->
-            <div style="height: 250px; position: relative; margin-top: 14px;">
+      <div class="responsive-grid-2" style="grid-template-columns: 2fr 1fr; gap: 24px; margin-top: 24px; align-items: start;">
+        
+        <!-- Left Side: Visualization Charts -->
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+          
+          <!-- Projection Line Chart Card -->
+          <div class="card" style="background: rgba(6, 8, 13, 0.6); border: 1px solid var(--border-subtle); padding: 20px;">
+            <h3 style="font-size: 15px; color: var(--gold-light); margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center;">
+              <span><i data-lucide="trending-up" style="color: var(--gold-primary); vertical-align: middle; margin-right: 6px;"></i> 40-Year Wealth Projection (Age 35 to 75)</span>
+              <span style="font-size: 11px; color: var(--text-secondary);">Default rates: Eq 12%, Db 7%, Gold 8%</span>
+            </h3>
+            <div style="height: 280px; position: relative;">
               <canvas id="wealthLineChart"></canvas>
             </div>
           </div>
 
-          <!-- BESPOKE INVESTMENT, TAX & INSURANCE DOSSIER CARD -->
-          <div class="card" style="background: rgba(6, 8, 13, 0.65); border: 1px solid var(--border-gold); margin-bottom: 20px; padding: 22px;">
-            <h3 style="font-size: 16px; color: var(--gold-light); margin-bottom: 18px;"><i data-lucide="folder-git" style="color: var(--gold-primary); vertical-align: middle; margin-right: 6px;"></i> Bespoke Investment & Tax Allocation Dossier</h3>
-
-            <!-- Returns Analyzer Dropdown Block -->
-            <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,0.02); padding: 12px; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.04);">
-              <label style="font-size: 12.5px; font-weight: 700; color: var(--gold-light); min-width: 180px;">Instrument Returns Analyzer:</label>
-              <select id="selectReturnAnalyzer" class="form-input" style="flex: 1; font-size: 13px; background: rgba(10,15,26,0.95); border: 1px solid var(--border-gold); padding: 6px 12px; color: var(--text-primary);">
-                <!-- Dynamically populated -->
-              </select>
+          <!-- Glide Path Stacked Area Chart Card -->
+          <div class="card" style="background: rgba(6, 8, 13, 0.6); border: 1px solid var(--border-subtle); padding: 20px;">
+            <h3 style="font-size: 15px; color: var(--gold-light); margin-bottom: 14px;">
+              <i data-lucide="shield" style="color: var(--gold-primary); vertical-align: middle; margin-right: 6px;"></i> Age-Based Asset Allocation Glide Path
+            </h3>
+            <div style="height: 200px; position: relative;">
+              <canvas id="glidePathChart"></canvas>
             </div>
-
-            <div id="panelReturnAnalyzer" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; background: rgba(0,0,0,0.25); padding: 14px; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.03); margin-bottom: 20px; text-align: center;">
-              <!-- Dynamically populated: CAGR, amount invested, access time, projected return yields -->
-            </div>
-
-            <!-- Complete Bifurcations Grid -->
-            <div class="responsive-grid-2" style="margin-bottom: 24px;">
-              <div>
-                <h4 style="font-size: 13px; color: var(--gold-primary); text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.5px;">Tax Planning & Goals Allocations</h4>
-                <div style="display: flex; flex-direction: column; gap: 14px; max-height: 280px; overflow-y: auto;" id="listDossierInvestments">
-                  <!-- Dynamic tables for Tax reserve instruments and Wealth Goals instruments -->
-                </div>
-              </div>
-
-              <div>
-                <h4 style="font-size: 13px; color: var(--gold-primary); text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.5px;">Bespoke HNI Insurance Portfolio</h4>
-                <div style="display: flex; flex-direction: column; gap: 8px;" id="listDossierInsurance">
-                  <!-- Dynamic HDFC Ergo, ManipalCigna, Star Health Senior, ICICI Pru Heart critical illness premiums -->
-                </div>
-              </div>
-            </div>
-
-            <!-- Visual Charts Panels Grid (Combined Bar chart + 3 Line charts side by side) -->
-            <div style="border-top: 1px solid var(--border-subtle); padding-top: 20px;">
-              <h4 style="font-size: 13px; color: var(--gold-primary); text-transform: uppercase; margin-bottom: 14px; letter-spacing: 0.5px;">Portfolio Performance Analytics</h4>
-              
-              <div class="responsive-grid-2" style="align-items: start;">
-                <!-- Combined Bar Chart -->
-                <div style="background: rgba(0,0,0,0.18); border: 1px solid rgba(255,255,255,0.03); padding: 12px; border-radius: var(--radius-sm); text-align: center;">
-                  <div style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 8px;">Verticals Combined Yield</div>
-                  <div id="svgCombinedBarContainer" style="display: flex; justify-content: center; align-items: center;">
-                    <!-- SVG Combined Bar Graph -->
-                  </div>
-                </div>
-
-                <!-- 3 Vertical Sparklines side-by-side -->
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                  <div style="background: rgba(0,0,0,0.18); border: 1px solid rgba(255,255,255,0.03); padding: 10px; border-radius: var(--radius-sm); text-align: center;">
-                    <div style="font-size: 9px; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 6px;">Tax Drawdown</div>
-                    <div id="svgTaxDrawdownLine" style="background: rgba(0,0,0,0.3); padding: 4px; border-radius: 4px;"></div>
-                    <div style="font-size: 10px; color: var(--accent-red); margin-top: 6px; font-weight: 700;">₹15Cr ➔ ₹0Cr</div>
-                  </div>
-
-                  <div style="background: rgba(0,0,0,0.18); border: 1px solid rgba(255,255,255,0.03); padding: 10px; border-radius: var(--radius-sm); text-align: center;">
-                    <div style="font-size: 9px; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 6px;">Goals Growth</div>
-                    <div id="svgGoalsGrowthLine" style="background: rgba(0,0,0,0.3); padding: 4px; border-radius: 4px;"></div>
-                    <div style="font-size: 10px; color: var(--accent-green); margin-top: 6px; font-weight: 700;">Compounding</div>
-                  </div>
-
-                  <div style="background: rgba(0,0,0,0.18); border: 1px solid rgba(255,255,255,0.03); padding: 10px; border-radius: var(--radius-sm); text-align: center;">
-                    <div style="font-size: 9px; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 6px;">Insurance Cover</div>
-                    <div id="svgInsuranceCoverLine" style="background: rgba(0,0,0,0.3); padding: 4px; border-radius: 4px;"></div>
-                    <div style="font-size: 10px; color: var(--gold-light); margin-top: 6px; font-weight: 700;">₹10L Premium</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
           </div>
 
-          <!-- AI Q&A ASSISTANT BAR -->
+          <!-- Q&A Assistant -->
           <div class="card" style="background: rgba(6, 8, 13, 0.6); border: 1px solid var(--border-subtle); padding: 20px;">
-            <h3 style="font-size: 16px; color: var(--gold-light); margin-bottom: 12px;"><i data-lucide="message-square" style="color: var(--gold-primary); vertical-align: middle; margin-right: 6px;"></i> Interactive Estate Planning Q&A</h3>
-            <div id="chatHistory" style="height: 180px; overflow-y: auto; background: rgba(10,15,26,0.9); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 8px;">
-              <div style="background: rgba(212,175,55,0.06); border-left: 3px solid var(--gold-primary); padding: 8px 12px; font-size: 13px;">
+            <h3 style="font-size: 15px; color: var(--gold-light); margin-bottom: 12px;"><i data-lucide="message-square" style="color: var(--gold-primary); vertical-align: middle; margin-right: 6px;"></i> Interactive Estate Planning Q&A</h3>
+            <div id="chatHistory" style="height: 140px; overflow-y: auto; background: rgba(10,15,26,0.9); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; font-size: 12px;">
+              <div style="background: rgba(212,175,55,0.06); border-left: 3px solid var(--gold-primary); padding: 8px 12px;">
                 <strong style="color: var(--gold-primary);">AI Advisor:</strong> Ask any specific question regarding your bespoke tax reserve, allocation structure, trust options, or market hedges.
               </div>
             </div>
 
-            <!-- Suggested Questions Pills -->
-            <div style="margin-bottom: 14px;">
-              <div style="font-size: 10px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Suggested Scenario Analyses:</div>
+            <!-- Suggested Questions -->
+            <div style="margin-bottom: 12px;">
+              <div style="font-size: 10px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Suggested Analyses:</div>
               <div class="chip-group" id="suggestedQuestions">
-                <!-- Suggestion pills injected dynamically based on profile -->
+                <!-- Injected dynamically -->
               </div>
             </div>
 
@@ -656,32 +608,100 @@
               <button class="btn-primary" id="btnSendChat" style="padding: 10px 20px; border-radius: var(--radius-sm);"><i data-lucide="send"></i> Ask AI</button>
             </div>
           </div>
+
         </div>
 
-        <!-- RIGHT SIDEBAR: ALLOCATION, TAX SLABS & AI REPORT -->
-        <aside style="display: flex; flex-direction: column; gap: 20px;">
-          <!-- ALLOCATION GRAPH -->
-          <div class="card" style="background: rgba(6, 8, 13, 0.65); border: 1px solid var(--border-subtle); padding: 18px;">
-            <h4 style="font-size: 14px; color: var(--gold-light); margin-bottom: 12px; text-align: center;">Strategic Asset Allocation Model</h4>
-            <div style="height: 160px; position: relative;">
-              <canvas id="resAllocChart"></canvas>
+        <!-- Right Side: KPI Cards & Global Controls -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          
+          <!-- KPI Metrics Row -->
+          <div class="responsive-grid-3" style="grid-template-columns: 1fr; gap: 12px;">
+            <!-- Outlay -->
+            <div style="background: rgba(6, 8, 13, 0.7); border: 1px solid var(--border-subtle); padding: 14px; border-radius: var(--radius-md); text-align: left; border-left: 3px solid var(--gold-primary);">
+              <div style="font-size: 10px; color: var(--text-secondary); text-transform: uppercase;">Total Liquid Outlay</div>
+              <div style="font-size: 20px; font-weight: 800; color: var(--text-primary); margin-top: 4px;" id="lblOutlayValue">₹ 73.00 Cr</div>
+            </div>
+            <!-- Projected Value -->
+            <div style="background: rgba(6, 8, 13, 0.7); border: 1px solid var(--border-subtle); padding: 14px; border-radius: var(--radius-md); text-align: left; border-left: 3px solid var(--accent-green);">
+              <div style="font-size: 10px; color: var(--text-secondary); text-transform: uppercase; display: flex; justify-content: space-between;">
+                <span>Projected Wealth</span>
+                <span id="lblTargetAgeText" style="color: var(--gold-light);">Age 75</span>
+              </div>
+              <div style="font-size: 20px; font-weight: 800; color: var(--accent-green); margin-top: 4px;" id="lblProjectedValue">₹ 1,850.58 Cr</div>
+            </div>
+            <!-- Blended Yield -->
+            <div style="background: rgba(6, 8, 13, 0.7); border: 1px solid var(--border-subtle); padding: 14px; border-radius: var(--radius-md); text-align: left; border-left: 3px solid var(--accent-blue);">
+              <div style="font-size: 10px; color: var(--text-secondary); text-transform: uppercase;">Weighted Blended CAGR</div>
+              <div style="font-size: 20px; font-weight: 800; color: var(--accent-blue); margin-top: 4px;" id="lblBlendedYield">9.95%</div>
             </div>
           </div>
 
-          <!-- INDIAN TAX SLABS COMPARISON (FY 2026-27) -->
-          <div class="card" style="background: rgba(6, 8, 13, 0.65); border: 1px solid var(--border-subtle); padding: 18px;">
-            <h4 style="font-size: 13px; color: var(--gold-light); margin-bottom: 8px;"><i data-lucide="percent" style="color: var(--gold-primary); width: 14px; vertical-align: middle; margin-right: 4px;"></i> India Tax Slab Comparison</h4>
-            <div id="taxSlabContainer" class="table-responsive" style="font-size: 11.5px; line-height: 1.5; color: var(--text-secondary);">
-              <!-- Rendered dynamically -->
+          <!-- Simulation Sliders -->
+          <div class="card" style="background: rgba(6, 8, 13, 0.65); border: 1px solid var(--border-subtle); padding: 20px;">
+            <h4 style="font-size: 13.5px; color: var(--gold-light); margin-bottom: 16px; text-transform: uppercase;">Global Portfolio Parameters</h4>
+            
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <!-- Time Horizon -->
+              <div class="form-group" style="margin: 0;">
+                <label class="form-label" style="display: flex; justify-content: space-between;">
+                  <span>Time Horizon (Years)</span>
+                  <strong id="valHorizonSlider" style="color: var(--gold-primary);">40 Years</strong>
+                </label>
+                <input type="range" id="sliderHorizon" min="10" max="40" step="5" value="40" style="accent-color: var(--gold-primary); height: 6px; padding: 0;" />
+              </div>
+
+              <!-- Equity Return Rate -->
+              <div class="form-group" style="margin: 0;">
+                <label class="form-label" style="display: flex; justify-content: space-between;">
+                  <span>Equity CAGR</span>
+                  <strong id="valEqSlider" style="color: var(--gold-primary);">12.0%</strong>
+                </label>
+                <input type="range" id="sliderReturnEq" min="5" max="20" step="0.5" value="12" style="accent-color: var(--gold-primary); height: 6px; padding: 0;" />
+              </div>
+
+              <!-- Debt Return Rate -->
+              <div class="form-group" style="margin: 0;">
+                <label class="form-label" style="display: flex; justify-content: space-between;">
+                  <span>Debt yield</span>
+                  <strong id="valDbSlider" style="color: var(--gold-primary);">7.0%</strong>
+                </label>
+                <input type="range" id="sliderReturnDb" min="3" max="12" step="0.5" value="7" style="accent-color: var(--gold-primary); height: 6px; padding: 0;" />
+              </div>
+
+              <!-- Gold Return Rate -->
+              <div class="form-group" style="margin: 0;">
+                <label class="form-label" style="display: flex; justify-content: space-between;">
+                  <span>Gold CAGR</span>
+                  <strong id="valGoldSlider" style="color: var(--gold-primary);">8.0%</strong>
+                </label>
+                <input type="range" id="sliderReturnGold" min="3" max="15" step="0.5" value="8" style="accent-color: var(--gold-primary); height: 6px; padding: 0;" />
+              </div>
+
+              <hr style="border-color: rgba(255,255,255,0.06); margin: 6px 0;" />
+
+              <!-- Inflation Toggle -->
+              <div class="form-group" style="margin: 0; display: flex; justify-content: space-between; align-items: center;">
+                <span class="form-label" style="margin: 0;">Inflation Impact Overlay</span>
+                <input type="checkbox" id="chkInflationActive" checked style="width: 18px; height: 18px; accent-color: var(--gold-primary);" />
+              </div>
+
+              <!-- Inflation Rate -->
+              <div class="form-group" style="margin: 0;" id="inflationRateGroup">
+                <label class="form-label" style="display: flex; justify-content: space-between;">
+                  <span>Assumed Inflation Rate</span>
+                  <strong id="valInflationSlider" style="color: var(--gold-primary);">6.0%</strong>
+                </label>
+                <input type="range" id="sliderReturnInflation" min="3" max="10" step="0.5" value="6" style="accent-color: var(--gold-primary); height: 6px; padding: 0;" />
+              </div>
             </div>
           </div>
 
-          <!-- AI bespoke DOSSIER -->
-          <div class="card" style="background: rgba(212, 175, 55, 0.05); border: 1px solid var(--border-gold); padding: 20px;">
-            <h4 style="font-size: 15px; color: var(--gold-light); margin-bottom: 10px;"><i data-lucide="sparkles" style="color: var(--gold-primary); vertical-align: middle; margin-right: 4px;"></i> AI Wealth Strategy Report</h4>
-            <div id="aiReportContent" style="font-size: 13px; line-height: 1.6; color: var(--text-primary);">
-              <!-- Rendered dynamically -->
-            </div>
+          <!-- Explanatory Narrative Box -->
+          <div class="card" style="background: rgba(212, 175, 55, 0.04); border: 1px dashed var(--border-gold); padding: 18px;">
+            <h4 style="font-size: 12.5px; color: var(--gold-primary); margin-bottom: 6px; text-transform: uppercase;">Dossier Insights & Yield Analysis</h4>
+            <p id="lblResultsExplanatoryText" style="font-size: 12px; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+              At Age 35, your ₹73 Crore base corpus grows under a weighted yield of ~9.95%. Compounded year-over-year while linearly transitioning along the glide path (gradually reducing equities to 0% and increasing high-yield debt to 75%), your capital compiles to ₹1,850.58 Crore at Age 75. Adjusted for 6% inflation, the real purchasing power matches ₹179.92 Crore.
+            </p>
           </div>
 
           <!-- COLLAPSIBLE API KEY SETUP -->
@@ -691,7 +711,12 @@
               <input type="password" id="geminiApiKey" class="form-input" style="font-size: 11px; padding: 6px 8px; width: 100%;" placeholder="Paste Gemini API Key here..." />
             </div>
           </details>
-        </aside>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
       </div>
     </div>
   </div>

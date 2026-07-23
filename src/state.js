@@ -40,13 +40,71 @@ const INITIAL_STATE = {
   // Step 4: Goals
   goals: [
     {
-      id: 'g-retire',
-      type: 'Retirement',
-      targetAmount: '100000000',
-      targetYears: '15',
-      calculatedSIP: 0,
-      calculatedLumpsum: 0,
-      futureValue: 0
+      id: 'g-tax',
+      type: 'Tax Planning Reserve (₹15 Cr)',
+      targetAmount: 150000000,
+      targetYears: 1,
+      bifurcations: [
+        { name: 'Aditya Birla Sun Life Liquid Fund', allocation: 80000000, yield: 7.03, access: '1–2 days' },
+        { name: 'Axis Overnight Funds', allocation: 40000000, yield: 5.37, access: '1–2 days' },
+        { name: 'Nippon India Ultra Short Duration Fund', allocation: 30000000, yield: 7.50, access: '1–2 days' }
+      ]
+    },
+    {
+      id: 'g-health-reserve',
+      type: 'Health Emergency Reserve (₹3 Cr)',
+      targetAmount: 30000000,
+      targetYears: 15,
+      bifurcations: [
+        { name: 'Sweep-in Fixed Deposit (Tier 1 - Instant)', allocation: 5000000, yield: 5.8, access: 'Same day' },
+        { name: 'ICICI Prudential Short Term Fund (Tier 2 - Fast)', allocation: 10000000, yield: 7.25, access: '2–3 days' },
+        { name: 'Tata Arbitrage Fund (Tier 3 - Tax-Efficient)', allocation: 15000000, yield: 7.59, access: '3–4 days' }
+      ]
+    },
+    {
+      id: 'g-lifestyle',
+      type: 'Lifestyle Maintenance Fund (₹5 Cr)',
+      targetAmount: 50000000,
+      targetYears: 5,
+      bifurcations: [
+        { name: 'Years 1–2: Liquid Funds (rolling)', allocation: 20000000, yield: 6.75, access: '1–2 days' },
+        { name: 'Years 2–3: Short / Low Duration Debt Funds', allocation: 20000000, yield: 7.25, access: '2–3 days' },
+        { name: 'Years 4–5: Conservative Hybrid / Debt Fund', allocation: 10000000, yield: 8.5, access: '3–4 days' }
+      ]
+    },
+    {
+      id: 'g-edu',
+      type: 'Higher Education Planning (₹2 Cr)',
+      targetAmount: 90000000,
+      targetYears: 15,
+      bifurcations: [
+        { name: 'Parag Parikh Flexi Cap Fund', allocation: 6000000, yield: 12.0, access: '3–4 days' },
+        { name: 'UTI Nifty 50 Index Fund', allocation: 6000000, yield: 11.5, access: '3–4 days' },
+        { name: 'Motilal Oswal S&P 500 Index Fund', allocation: 4000000, yield: 11.0, access: '3–4 days' },
+        { name: 'Motilal Oswal NASDAQ 100 ETF', allocation: 4000000, yield: 13.0, access: '3–4 days' }
+      ]
+    },
+    {
+      id: 'g-marriage',
+      type: 'Marriage Planning (₹3 Cr)',
+      targetAmount: 30000000,
+      targetYears: 22,
+      bifurcations: [
+        { name: 'HDFC Large and Mid Cap Fund (Equity 60%)', allocation: 18000000, yield: 12.0, access: '3–4 days' },
+        { name: 'ICICI Prudential Corporate Bond Fund (Debt 40%)', allocation: 12000000, yield: 7.5, access: '3–4 days' }
+      ]
+    },
+    {
+      id: 'g-ins-port',
+      type: 'Health Insurance Portfolio',
+      targetAmount: 1000000,
+      targetYears: 1,
+      bifurcations: [
+        { name: 'HDFC ERGO Optima Secure (Family Floater, ₹1 Cr Base)', allocation: 150000, yield: 0, access: 'Same day' },
+        { name: 'ManipalCigna Lifetime Health Global (Super Top-Up, ₹1 Cr Global)', allocation: 200000, yield: 0, access: 'Same day' },
+        { name: 'Star Health / Care Senior (Parents, ₹50 Lakhs)', allocation: 300000, yield: 0, access: 'Same day' },
+        { name: 'ICICI Pru Heart / Cancer Protect (Critical Illness, ₹5 Cr Split)', allocation: 350000, yield: 0, access: 'Same day' }
+      ]
     }
   ],
   
@@ -54,6 +112,13 @@ const INITIAL_STATE = {
   selectedAssets: ['Direct Equity', 'Mutual Funds & ETFs', 'Alternative Assets (AIF/PMS)'],
   stockExperience: 'Intermediate',
   preferredSectors: ['Technology', 'AI', 'Defence'],
+  capitalWeights: {
+    equity: 45,
+    debt: 25,
+    alts: 15,
+    re: 10,
+    gold: 5
+  },
 
   // Step 6: Tax
   residentialStatus: 'Resident',
@@ -65,6 +130,19 @@ const INITIAL_STATE = {
   // Step 7: Insurance
   hasLifeInsurance: 'Yes',
   hasHealthInsurance: 'Yes',
+  
+  // Simulation Controls
+  globalReturnRates: {
+    equity: 12,
+    debt: 7,
+    alts: 10,
+    re: 9,
+    gold: 8,
+    cash: 5
+  },
+  globalHorizon: 40,
+  inflationRate: 6,
+  inflationActive: true,
   
   auditLogs: [],
   lastSavedAt: null,
