@@ -714,7 +714,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
 
           <!-- Dynamic Projections & Line Graph -->
-          <div style="display: grid; grid-template-columns: 1fr 180px; gap: 20px; border-top: 1px solid var(--border-subtle); padding-top: 16px;">
+          <div class="responsive-grid-goal-path" style="border-top: 1px solid var(--border-subtle); padding-top: 16px;">
             <div class="projection-table-area" style="overflow-x: auto;">
               ${projectionHTML}
             </div>
