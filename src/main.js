@@ -547,32 +547,38 @@ document.addEventListener('DOMContentLoaded', () => {
     const metrics = computeAIMetrics(state);
 
     goalsContainer.innerHTML = (metrics.calculatedGoals || []).map((goal, idx) => {
-      const isDrawdown = goal.type === 'Health Emergency Reserve' || goal.type === 'Lifestyle Maintenance Fund';
+      const isDrawdown = goal.type.includes('Health Emergency') || goal.type.includes('Lifestyle Maintenance');
       
       // Determine description
       let descHTML = '';
-      if (goal.type === 'Health Emergency Reserve') {
+      if (goal.type.includes('Health Emergency')) {
         descHTML = `
           <div style="background: rgba(239, 68, 68, 0.04); border-left: 3px solid var(--accent-red); padding: 10px 14px; margin-bottom: 16px; font-size: 11.5px; line-height: 1.45; color: var(--text-secondary);">
             <strong>Healthcare Gap Cushion:</strong> Sized for ~12-15 years of healthcare gap-costs (co-payments, room-rent capping, out-of-network consults, chronic medications for senior parents) without touching principal portfolios.
           </div>
         `;
-      } else if (goal.type === 'Lifestyle Maintenance Fund') {
+      } else if (goal.type.includes('Lifestyle Maintenance')) {
         descHTML = `
           <div style="background: rgba(212, 175, 55, 0.04); border-left: 3px solid var(--gold-primary); padding: 10px 14px; margin-bottom: 16px; font-size: 11.5px; line-height: 1.45; color: var(--text-secondary);">
             <strong>Founder Lifestyle Runway:</strong> Secures a full 5-year runway of living expenses, travel, child education, and discretionary spends (~₹8.33L/month), insulated from market volatility.
           </div>
         `;
-      } else if (goal.type === 'Higher Education Planning') {
+      } else if (goal.type.includes('Higher Education')) {
         descHTML = `
           <div style="background: rgba(56, 189, 248, 0.04); border-left: 3px solid var(--accent-blue); padding: 10px 14px; margin-bottom: 16px; font-size: 11.5px; line-height: 1.45; color: var(--text-secondary);">
             <strong>Twin Abroad Education:</strong> Multi-currency equity sleeve targeting inflation-adjusted ₹9 Crore in 15 years to hedge against INR depreciation and capture global secular growth.
           </div>
         `;
-      } else if (goal.type === 'Marriage Planning') {
+      } else if (goal.type.includes('Marriage')) {
         descHTML = `
           <div style="background: rgba(16, 185, 129, 0.04); border-left: 3px solid var(--accent-green); padding: 10px 14px; margin-bottom: 16px; font-size: 11.5px; line-height: 1.45; color: var(--text-secondary);">
             <strong>Twin Wedding Planning:</strong> Long-term compound structure targeting ₹13 Crore in 22 years (split 60/40 Equity/Debt) to secure requirements while preserving legacy capital.
+          </div>
+        `;
+      } else if (goal.type.includes('Health Insurance')) {
+        descHTML = `
+          <div style="background: rgba(168, 85, 247, 0.04); border-left: 3px solid var(--accent-purple); padding: 10px 14px; margin-bottom: 16px; font-size: 11.5px; line-height: 1.45; color: var(--text-secondary);">
+            <strong>Bespoke Healthcare Cover:</strong> This portfolio allocates a ₹10 Lakhs annual premium budget across four specialized covers: HDFC Ergo Optima Secure (primary ₹1 Cr floater), ManipalCigna Global (₹1 Cr international critical shield), Star Health Senior (parents cover), and ICICI Pru Heart/Cancer Protect (critical illness lump-sum payout).
           </div>
         `;
       }
