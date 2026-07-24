@@ -1162,7 +1162,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // STEP 5: INITIAL CAPITAL DEPLOYMENT (₹73 Cr Base)
+  // STEP 5: INITIAL CAPITAL DEPLOYMENT (Dynamic Glide Path Corpus)
+  function getCorpusForAge(age) {
+    const milestoneCorpus = {
+      35: 73.00,
+      45: 184.59,
+      55: 439.64,
+      65: 970.93,
+      75: 1850.58
+    };
+    return milestoneCorpus[age] || 73.00;
+  }
+
+  const labelIdMap = {
+    equity: 'lblCapWeightEquity',
+    debt: 'lblCapWeightDebt',
+    alts: 'lblCapWeightAlts',
+    re: 'lblCapWeightRE',
+    gold: 'lblCapWeightGold',
+    cash: 'lblCapWeightCash'
+  };
+
+  const sliderIdMap = {
+    equity: 'sliderCapEquity',
+    debt: 'sliderCapDebt',
+    alts: 'sliderCapAlts',
+    re: 'sliderCapRE',
+    gold: 'sliderCapGold',
+    cash: 'sliderCapCash'
+  };
+
   let capDeploymentChartInstance = null;
 
   function renderCapitalDeploymentChart() {
@@ -1170,6 +1199,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctx = document.getElementById('capDeploymentChart');
     if (!ctx) return;
     
+    const simAge = parseInt(document.getElementById('selectSimulationAge')?.value || 35);
+    const currentCorpus = getCorpusForAge(simAge);
+
     const dataVals = [
       state.capitalWeights.equity !== undefined ? state.capitalWeights.equity : 45,
       state.capitalWeights.debt !== undefined ? state.capitalWeights.debt : 25,
@@ -1178,48 +1210,107 @@ document.addEventListener('DOMContentLoaded', () => {
       state.capitalWeights.gold !== undefined ? state.capitalWeights.gold : 5,
       state.capitalWeights.cash !== undefined ? state.capitalWeights.cash : 0
     ];
-    
+
     if (capDeploymentChartInstance) {
-      capDeploymentChartInstance.data.datasets[0].data = dataVals;
-      capDeploymentChartInstance.update();
-    } else {
-      capDeploymentChartInstance = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          labels: ['Equity', 'Debt', 'Alternatives', 'Real Estate', 'Gold', 'Cash / Liquidity'],
-          datasets: [{
-            data: dataVals,
-            backgroundColor: ['#d4af37', '#38bdf8', '#a855f7', '#f59e0b', '#10b981', '#94a3b8'],
-            borderColor: '#06080d',
-            borderWidth: 2
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'bottom',
-              labels: { color: '#94a3b8', font: { size: 10 } }
+      capDeploymentChartInstance.destroy();
+      capDeploymentChartInstance = null;
+    }
+    
+    capDeploymentChartInstance = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Equity', 'Debt', 'Alternatives', 'Real Estate', 'Gold', 'Cash / Liquidity'],
+        datasets: [{
+          data: dataVals,
+          backgroundColor: ['#d4af37', '#38bdf8', '#a855f7', '#f59e0b', '#10b981', '#94a3b8'],
+          borderColor: '#06080d',
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { color: '#94a3b8', font: { size: 10 } }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const weight = context.parsed || 0;
+                const amtCr = (weight * currentCorpus) / 100;
+                return `${context.label}: ${weight}% (₹ ${amtCr.toFixed(2)} Cr)`;
+              }
             }
           }
         }
-      });
+      }
+    });
+  }
+
+  function updateEquityCompositionView() {
+    const state = stateManager.getState();
+    const simAge = parseInt(document.getElementById('selectSimulationAge')?.value || 35);
+    const corpus = getCorpusForAge(simAge);
+    const eqWeight = state.capitalWeights.equity !== undefined ? state.capitalWeights.equity : 45;
+    const eqSleeveAmt = (eqWeight * corpus) / 100;
+
+    const hdrTitle = document.getElementById('hdrStep5Title');
+    if (hdrTitle) {
+      hdrTitle.innerHTML = `<i data-lucide="layers"></i> Step 5: Equity Portfolio Composition (₹${eqSleeveAmt.toFixed(2)} Cr Sleeve at Age ${simAge})`;
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    const tbody = document.getElementById('tbodyEquityComposition');
+    if (tbody) {
+      const domTotal = eqSleeveAmt * 0.60;
+      const forTotal = eqSleeveAmt * 0.30;
+      const mfTotal = eqSleeveAmt * 0.10;
+
+      tbody.innerHTML = `
+        <tr style="border-bottom: 1px dashed rgba(255,255,255,0.04);">
+          <td rowspan="3" style="font-weight: 700; color: var(--gold-primary); vertical-align: middle;">Domestic Equity (60% = ₹${domTotal.toFixed(2)} Cr)</td>
+          <td>Financial Services (28%)</td>
+          <td style="text-align: right;">28%</td>
+          <td style="text-align: right; color: var(--accent-green);">₹ ${(domTotal * 0.28).toFixed(2)} Cr</td>
+        </tr>
+        <tr style="border-bottom: 1px dashed rgba(255,255,255,0.04);">
+          <td>Information Technology (14%)</td>
+          <td style="text-align: right;">14%</td>
+          <td style="text-align: right; color: var(--accent-green);">₹ ${(domTotal * 0.14).toFixed(2)} Cr</td>
+        </tr>
+        <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+          <td>Consumer, Health, Ind. & Energy (58%)</td>
+          <td style="text-align: right;">58%</td>
+          <td style="text-align: right; color: var(--accent-green);">₹ ${(domTotal * 0.58).toFixed(2)} Cr</td>
+        </tr>
+        
+        <tr style="border-bottom: 1px dashed rgba(255,255,255,0.04);">
+          <td rowspan="2" style="font-weight: 700; color: var(--accent-blue); vertical-align: middle;">Foreign Markets (30% = ₹${forTotal.toFixed(2)} Cr)</td>
+          <td>US Large Cap / S&P 500 (55%)</td>
+          <td style="text-align: right;">55%</td>
+          <td style="text-align: right; color: var(--accent-green);">₹ ${(forTotal * 0.55).toFixed(2)} Cr</td>
+        </tr>
+        <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+          <td>US Tech, Global & EM (45%)</td>
+          <td style="text-align: right;">45%</td>
+          <td style="text-align: right; color: var(--accent-green);">₹ ${(forTotal * 0.45).toFixed(2)} Cr</td>
+        </tr>
+
+        <tr>
+          <td style="font-weight: 700; color: var(--accent-purple); vertical-align: middle;">Mutual Funds (10% = ₹${mfTotal.toFixed(2)} Cr)</td>
+          <td>Multi-Asset Allocation (100%)</td>
+          <td style="text-align: right;">100%</td>
+          <td style="text-align: right; color: var(--accent-green);">₹ ${mfTotal.toFixed(2)} Cr</td>
+        </tr>
+      `;
     }
   }
 
   function initCapitalDeploymentSliders() {
-    const sliders = {
-      equity: document.getElementById('sliderCapEquity'),
-      debt: document.getElementById('sliderCapDebt'),
-      alts: document.getElementById('sliderCapAlts'),
-      re: document.getElementById('sliderCapRE'),
-      gold: document.getElementById('sliderCapGold'),
-      cash: document.getElementById('sliderCapCash')
-    };
-    
-    Object.keys(sliders).forEach(key => {
-      const slider = sliders[key];
+    Object.keys(sliderIdMap).forEach(key => {
+      const slider = document.getElementById(sliderIdMap[key]);
       if (!slider) return;
       
       slider.addEventListener('input', (e) => {
@@ -1227,12 +1318,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const state = stateManager.getState();
         state.capitalWeights[key] = val;
         
-        // Update labels
-        const weight = val;
-        const amtCr = (weight * 73) / 100;
-        const labelEl = document.getElementById(`lblCapWeight\&{key === 'alts' ? 'Alts' : key === 're' ? 'RE' : key === 'cash' ? 'CASH' : key.charAt(0).toUpperCase() + key.slice(1)}`.replace("&", "$"));
+        const simAge = parseInt(document.getElementById('selectSimulationAge')?.value || 35);
+        const corpus = getCorpusForAge(simAge);
+
+        // Update text label
+        const amtCr = (val * corpus) / 100;
+        const labelEl = document.getElementById(labelIdMap[key]);
         if (labelEl) {
-          labelEl.textContent = `${weight}% (₹ ${amtCr.toFixed(2)} Cr)`;
+          labelEl.textContent = `${val}% (₹ ${amtCr.toFixed(2)} Cr)`;
         }
         
         // Calculate total sum
@@ -1257,6 +1350,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         stateManager.update('capitalWeights', state.capitalWeights);
         renderCapitalDeploymentChart();
+        updateEquityCompositionView();
       });
     });
 
@@ -1266,12 +1360,17 @@ document.addEventListener('DOMContentLoaded', () => {
       selectSimulationAge.addEventListener('change', (e) => {
         const age = parseInt(e.target.value);
         const state = stateManager.getState();
+        const corpus = getCorpusForAge(age);
         
         let w = {};
         if (age === 35) {
           w = { equity: 45, debt: 25, alts: 15, re: 10, gold: 5, cash: 0 };
+        } else if (age === 45) {
+          w = { equity: 40, debt: 30, alts: 11, re: 7, gold: 7, cash: 5 };
         } else if (age === 55) {
           w = { equity: 30, debt: 45, alts: 5, re: 3, gold: 8, cash: 9 };
+        } else if (age === 65) {
+          w = { equity: 20, debt: 55, alts: 0, re: 0, gold: 10, cash: 15 };
         } else if (age === 75) {
           w = { equity: 0, debt: 75, alts: 0, re: 0, gold: 10, cash: 15 };
         }
@@ -1279,13 +1378,21 @@ document.addEventListener('DOMContentLoaded', () => {
         state.capitalWeights = w;
         stateManager.update('capitalWeights', w, `Simulated asset weights at Age ${age}`);
         
-        // Sync sliders and trigger inputs
-        Object.keys(sliders).forEach(key => {
-          const slider = sliders[key];
+        // Update Card Header
+        const hdrAlloc = document.getElementById('hdrBaseAssetAlloc');
+        if (hdrAlloc) {
+          hdrAlloc.innerHTML = `<i data-lucide="pie-chart" style="color: var(--gold-primary); vertical-align: middle; margin-right: 6px;"></i> Base Asset Allocation (₹${corpus.toFixed(2)} Cr Corpus at Age ${age})`;
+          if (window.lucide) window.lucide.createIcons();
+        }
+
+        // Sync slider values and labels
+        Object.keys(sliderIdMap).forEach(key => {
+          const slider = document.getElementById(sliderIdMap[key]);
           if (slider) {
             slider.value = w[key];
-            const amtCr = (w[key] * 73) / 100;
-            const labelEl = document.getElementById(`lblCapWeight\&{key === 'alts' ? 'Alts' : key === 're' ? 'RE' : key === 'cash' ? 'CASH' : key.charAt(0).toUpperCase() + key.slice(1)}`.replace("&", "$"));
+            slider.setAttribute('value', w[key]);
+            const amtCr = (w[key] * corpus) / 100;
+            const labelEl = document.getElementById(labelIdMap[key]);
             if (labelEl) {
               labelEl.textContent = `${w[key]}% (₹ ${amtCr.toFixed(2)} Cr)`;
             }
@@ -1304,29 +1411,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         renderCapitalDeploymentChart();
+        updateEquityCompositionView();
       });
     }
   }
 
   function syncCapitalSlidersFromState() {
     const state = stateManager.getState();
-    const sliders = {
-      equity: document.getElementById('sliderCapEquity'),
-      debt: document.getElementById('sliderCapDebt'),
-      alts: document.getElementById('sliderCapAlts'),
-      re: document.getElementById('sliderCapRE'),
-      gold: document.getElementById('sliderCapGold'),
-      cash: document.getElementById('sliderCapCash')
-    };
-    
-    Object.keys(sliders).forEach(key => {
-      const slider = sliders[key];
+    const simAge = parseInt(document.getElementById('selectSimulationAge')?.value || 35);
+    const corpus = getCorpusForAge(simAge);
+
+    // Update Card Header
+    const hdrAlloc = document.getElementById('hdrBaseAssetAlloc');
+    if (hdrAlloc) {
+      hdrAlloc.innerHTML = `<i data-lucide="pie-chart" style="color: var(--gold-primary); vertical-align: middle; margin-right: 6px;"></i> Base Asset Allocation (₹${corpus.toFixed(2)} Cr Corpus at Age ${simAge})`;
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    Object.keys(sliderIdMap).forEach(key => {
+      const slider = document.getElementById(sliderIdMap[key]);
       if (!slider) return;
       const weight = state.capitalWeights[key] !== undefined ? state.capitalWeights[key] : (key === 'equity' ? 45 : key === 'debt' ? 25 : key === 'alts' ? 15 : key === 're' ? 10 : key === 'gold' ? 5 : 0);
       slider.value = weight;
+      slider.setAttribute('value', weight);
       
-      const amtCr = (weight * 73) / 100;
-      const labelEl = document.getElementById(`lblCapWeight${key === 'alts' ? 'Alts' : key === 're' ? 'RE' : key === 'cash' ? 'CASH' : key.charAt(0).toUpperCase() + key.slice(1)}`);
+      const amtCr = (weight * corpus) / 100;
+      const labelEl = document.getElementById(labelIdMap[key]);
       if (labelEl) {
         labelEl.textContent = `${weight}% (₹ ${amtCr.toFixed(2)} Cr)`;
       }
@@ -1350,6 +1460,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
     renderCapitalDeploymentChart();
+    updateEquityCompositionView();
   }
 
   // STEP 6: EQUITY PORTFOLIO COMPOSITION (₹32.85 Cr Sleeve)
