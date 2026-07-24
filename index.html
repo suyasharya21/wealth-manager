@@ -308,9 +308,11 @@
               <!-- Sim Age Dropdown -->
               <div style="display: flex; gap: 10px; align-items: center; margin-left: auto;">
                 <label class="form-label" style="margin: 0; font-size: 12.5px; color: var(--text-secondary);">Simulate Portfolio at Age:</label>
-                <select id="selectSimulationAge" class="form-input" style="width: 100px; padding: 6px 12px; font-size: 13px; background: rgba(10,15,26,0.9); border: 1px solid var(--border-gold); color: var(--text-primary);">
+                <select id="selectSimulationAge" class="form-input" style="width: 110px; padding: 6px 12px; font-size: 13px; background: rgba(10,15,26,0.9); border: 1px solid var(--border-gold); color: var(--text-primary);">
                   <option value="35" selected>Age 35</option>
+                  <option value="45">Age 45</option>
                   <option value="55">Age 55</option>
+                  <option value="65">Age 65</option>
                   <option value="75">Age 75</option>
                 </select>
               </div>
@@ -345,7 +347,7 @@
 
             <!-- Lower Bottom: Capital Deployment Block -->
             <div style="border-top: 1px solid var(--border-subtle); padding-top: 24px;">
-              <h3 style="font-size: 16px; color: var(--gold-light); margin-bottom: 14px;"><i data-lucide="pie-chart" style="color: var(--gold-primary); vertical-align: middle; margin-right: 6px;"></i> Base Asset Allocation (₹73 Cr Corpus)</h3>
+              <h3 style="font-size: 16px; color: var(--gold-light); margin-bottom: 14px;" id="hdrBaseAssetAlloc"><i data-lucide="pie-chart" style="color: var(--gold-primary); vertical-align: middle; margin-right: 6px;"></i> Base Asset Allocation (₹73.00 Cr Corpus at Age 35)</h3>
               
               <div class="responsive-grid-2" style="align-items: center;">
                 <div>
@@ -425,7 +427,7 @@
         <section class="step-pane" id="step-5">
           <div class="card">
             <div class="card-header">
-              <h2 class="card-title"><i data-lucide="layers"></i> Step 5: Equity Portfolio Composition (₹32.85 Cr Sleeve)</h2>
+              <h2 class="card-title" id="hdrStep5Title"><i data-lucide="layers"></i> Step 5: Equity Portfolio Composition (₹32.85 Cr Sleeve)</h2>
               <span class="brand-tag">Deep-Dive Sunburst Model</span>
             </div>
 
@@ -445,7 +447,7 @@
                         <th style="padding: 6px; text-align: right;">Rupees (Cr)</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tbodyEquityComposition">
                       <!-- DOMESTIC -->
                       <tr style="border-bottom: 1px dashed rgba(255,255,255,0.04);">
                         <td rowspan="3" style="font-weight: 700; color: var(--gold-primary); vertical-align: middle;">Domestic Equity (60%)</td>
